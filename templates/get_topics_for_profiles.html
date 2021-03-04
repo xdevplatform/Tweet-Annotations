@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %} Get Topics for a Profile {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+      <p>Insert the username you'd like to get topics for:</p>
+    </div>
+</div>
+
+<form action="" method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+        <br>
+        {{ form.username.label }}<br>
+        {{ form.username(size=32) }}
+    </p>
+    <input class="btn btn-sm btn-primary" type="submit" value="Submit">
+    <br>
+</form>
+
+{% endblock %}
+
+{% block results %}
+
+{% if annotations_data == 0 %}
+
+    <div class="card">
+        <div class="card-body">
+        <p>Invalid username.</p>
+        </div>
+    </div>
+
+{% elif annotations_data == 1 %}
+
+    <div class="card">
+        <div class="card-body">
+        <p>Oops! Something went wrong, response code: {{ response_code }} Try again later.</p>
+        </div>
+    </div>
+
+{% elif tweet_count == 0 %}
+
+    <div class="card">
+        <div class="card-body">
+        <p>No data to analyze.</p>
+        </div>
+    </div>    
+
+{% else %}
+
+    <div class="card">
+        <div class="card-body">
+
+            <p><b>Total number of Tweets:</b> {{ tweet_count }}</p>
+
+
+            <p><b>Top annotation domains:</b> {{ domain }}
+            <p><b>Top annotation entities:</b> {{ entity }}</p>
+            <p><b>Top people:</b> {{ person }}</p>
+            <p><b>Top places:</b> {{ place }}</p>
+            <p><b>Top products:</b> {{ product }}</p>
+            <p><b>Top organizations:</b> {{ organization }}</p>
+            <p><b>Other topics:</b> {{ other }}</p>
+            <sup>Note: this application only displays entities with a probability score >= 0.5. In addition, only annotations and entities that have been mentioned 5 times or more are returned.</sup>
+            <sup>Read more about Tweet Annotations in <a href="https://developer.twitter.com/en/docs/twitter-api/annotations" >our documentation</a></sup>
+        </div>
+    </div>
+    
+{% endif %}
+
+{% endblock %}

@@ -1,5 +1,30 @@
 {% extends 'base.html' %}
 
-{% block content %}
+{% block header %}
     <h1>{% block title %} Tweet Annotations {% endblock %}</h1>
 {% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+      <p>This app uses <a href url="https://developer.twitter.com/en/docs/twitter-api/annotations">Tweet Annotations</a> to annotate profiles and highlight areas of interest for different Twitter users and their followers.</p>
+      <p>Select one of the following options:</p>
+    </div>
+ </div>
+
+<form action="" method = "POST">    
+    <br>
+    <p><a href=GetTopicsForProfiles type="button" class="btn btn-sm btn-primary">Select</a> |||| Get topics of interest for a given profile.</p>
+    <br>
+    <p><a href=GetTopicsForProfileFollowers type="button" class="btn btn-sm btn-primary">Select</a> |||| Get topics of interest for a given profile's follower base.</p>
+    <br>
+    <p><a href=GetProfilesForTopic type="button" class="btn btn-sm btn-primary">Select</a> |||| For a given topic, get a list of users who often Tweet about the topic.</p>
+    <br>
+    <p><a href=GetTweetMetricsForTopic type="button" class="btn btn-sm btn-primary">Select</a> |||| Get resonance metrics for a given topic.</p>
+</form>
+
+{% endblock %}
+
+
+

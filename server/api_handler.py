@@ -2,7 +2,7 @@ import requests
 
 class ApiHandler:
     """
-    Base class for making requests to the Twitter API v2
+    Class for making requests to the Twitter API v2
     https://developer.twitter.com/en/docs/twitter-api/early-access
     """
     
@@ -23,7 +23,6 @@ class ApiHandler:
         :param params: str
         :param payload: dict
         """
-        payload = payload
         return requests.request(
             "GET",
             url=self.url,
