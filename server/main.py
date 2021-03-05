@@ -1,4 +1,5 @@
 import json
+import random
 from server.api_handler import (
     ApiHandler
 )
@@ -28,12 +29,11 @@ def get_user_tweet_timeline(user_id):
 
     tweets = []
     user_tweet_timeline = ApiHandler(f"users/{user_id}/tweets", authentication)
-    # [TO DO --> Date selector in UI to select start_time parameter]
     #To return all 3200 available activities for the user, remove the start_time parameter from the payload below:
-    payload = {"tweet.fields": "context_annotations,entities", "max_results": "100", "start_time": "2021-03-04T12:00:00Z"} 
+    payload = {"tweet.fields": "context_annotations,entities", "max_results": "100", "start_time": "2021-03-04T12:00:00Z"}
     response = user_tweet_timeline(payload)
     if response.status_code != 200:
-        print("Error:", response.status_code, response.text)
+        print("Response", response.status_code, response.text)
     else:
         data = json.loads(response.text)
         request_count = 1
@@ -45,7 +45,7 @@ def get_user_tweet_timeline(user_id):
                 payload.update(pagination_token=pagination_token)
                 response = user_tweet_timeline(payload)
                 if response.status_code != 200:
-                    print("Error:", response.status_code)
+                    print("Response:", response.status_code)
                     break
                 data = json.loads(response.text)
                 request_count += 1
@@ -54,7 +54,64 @@ def get_user_tweet_timeline(user_id):
                         tweets.append(tweet)
             print("Request count:", request_count)
             print("Code:", response.status_code)
+    
     return tweets, response.status_code
+
+def get_user_tweet_timeline_no_pagination(user_id):
+    
+    tweets = []
+    user_tweet_timeline = ApiHandler(f"users/{user_id}/tweets", authentication)
+    payload = {"tweet.fields": "context_annotations,entities", "max_results": "10"}
+    response = user_tweet_timeline(payload)
+    if response.status_code != 200:
+        print("Response", response.status_code, response.text)
+    else:
+        data = json.loads(response.text)
+        if "data" in data:
+            for tweet in data["data"]:
+                tweets.append(tweet)
+    
+    return tweets, response.status_code
+
+def get_user_followers(user_id):
+    
+    followers = []
+    user_followers = ApiHandler(f"users/{user_id}/followers", authentication)
+    payload = {"max_results": "1000", "user.fields": "public_metrics"}
+    response = user_followers(payload)
+    if response.status_code != 200:
+        print("Response:", response.status_code, response.text)
+    else: 
+        data = json.loads(response.text)
+        request_count = 1 
+        if "data" in data:
+            for follower in data["data"]:
+                followers.append(follower)
+            while "next_token" in data["meta"]:
+                pagination_token = data["meta"]["next_token"]
+                payload.update(pagination_token=pagination_token)
+                response = user_followers(payload)
+                if response.status_code != 200:
+                    print("Response:", response.status_code)
+                    break
+                data = json.loads(response.text)
+                request_count += 1
+                if "data" in data:
+                    for follower in data["data"]:
+                        followers.append(follower)
+            print("Request count:", request_count) 
+    
+    return followers, response.status_code
+
+def random_selection(followers, follower_count):
+    
+    if follower_count > 50: 
+        random.seed(56)
+        selection = random.sample(followers, k=50)
+    else: 
+        selection = followers
+    
+    return selection
 
 def get_annotations(tweets):
     

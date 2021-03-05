@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %} Get Frequent Topics for a Profile's Followers {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+      <p>What topics do your followers Tweet about the most?</p>
+      <p>Input a username below:</p>
+    </div>
+</div>
+
+<form action="" method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+        <br>
+        {{ form.username.label }}<br>
+        {{ form.username(size=32) }}
+    </p>
+    <input class="btn btn-sm btn-primary" type="submit" value="Submit">
+    <br>
+</form>
+
+{% endblock %}
+
+{% block results %}
+
+{% if annotations_data == 0 %}
+
+    <div class="card">
+        <div class="card-body">
+        <p>Invalid username.</p>
+        </div>
+    </div>
+
+{% elif annotations_data == 1 %}
+
+    <div class="card">
+        <div class="card-body">
+        <p>Oops! Something went wrong, response code: {{ response_code }} Try again later.</p>
+        </div>
+    </div>
+
+{% endif %}
+
+{% endblock %}
