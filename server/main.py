@@ -28,9 +28,9 @@ def get_user_tweet_timeline(user_id):
 
     tweets = []
     user_tweet_timeline = ApiHandler(f"users/{user_id}/tweets", authentication)
+    # [TO DO --> Date selector in UI to select start_time parameter]
     #To return all 3200 available activities for the user, remove the start_time parameter from the payload below:
-    payload = {"tweet.fields": "context_annotations,entities", "start_time": "2021-02-01T15:00:00Z"} 
-    # payload = {"tweet.fields": "context_annotations,entities"} 
+    payload = {"tweet.fields": "context_annotations,entities", "max_results": "100", "start_time": "2021-03-04T12:00:00Z"} 
     response = user_tweet_timeline(payload)
     if response.status_code != 200:
         print("Error:", response.status_code, response.text)
@@ -48,14 +48,10 @@ def get_user_tweet_timeline(user_id):
                     print("Error:", response.status_code)
                     break
                 data = json.loads(response.text)
+                request_count += 1
                 if "data" in data:
-                    if tweet in data["data"]:
+                    for tweet in data["data"]:
                         tweets.append(tweet)
-                    else: 
-                        print("DATA", data)
-                        print("RESPONSE CODE", response.status_code)
-                        pass
-                    request_count += 1
             print("Request count:", request_count)
             print("Code:", response.status_code)
     return tweets, response.status_code
@@ -116,42 +112,15 @@ def get_annotations(tweets):
         organization_frequency_ordered = {k: v for k, v in sorted(organization_frequency.items(), key=lambda item: item[1], reverse=True)}
         other_frequency_ordered = {k: v for k, v in sorted(other_frequency.items(), key=lambda item: item[1], reverse=True)}
 
-        # [To Do -- Figure out how to unpack items from dictionaries below]
-        # domain_frequency_ordered = {**domain_frequency_ordered} # Create a shallow copy, to avoid "RuntimeError: dictionary changed size during iteration"
-        # print("HEY", domain_frequency_ordered)
-        # for k,v in domain_frequency_ordered.items():
-        #     if v < 5:
-        #         domain_frequency_ordered.pop(k,v)
+        # Only returns annotations and entities that are present in 2+ Tweets.
+        domain_list_top = {k: v for k, v in domain_frequency_ordered.items() if v >= 2}
+        entity_list_top = {k: v for k, v in entity_frequency_ordered.items() if v >= 2}
+        person_list_top = {k: v for k, v in person_frequency_ordered.items() if v >= 2}
+        place_list_top = {k: v for k, v in place_frequency_ordered.items() if v >= 2}
+        product_list_top = {k: v for k, v in product_frequency_ordered.items() if v >= 2}
+        organization_list_top = {k: v for k, v in organization_frequency_ordered.items() if v >= 2}
+        other_list_top = {k: v for k, v in other_frequency_ordered.items() if v >= 2} 
 
-        # entity_frequency_ordered = {**entity_frequency_ordered}
-        # for k,v in entity_frequency_ordered.items():
-        #     if v < 5: 
-        #         entity_frequency_ordered.pop(k,v)
-        
-        # person_frequency_ordered = {**person_frequency_ordered}
-        # for k,v in person_frequency_ordered.items(): 
-        #     if v < 5:
-        #         person_frequency_ordered.pop(k,v)
-                
-        # place_frequency_ordered = {**place_frequency_ordered} 
-        # for k,v in place_frequency_ordered.items():
-        #     if v < 5:
-        #         place_frequency_ordered.pop(k,v)
-
-        # person_frequency_ordered = {**product_frequency_ordered}
-        # for k,v in product_frequency_ordered.items():
-        #     if v < 5:
-        #         product_frequency_ordered.pop(k,v)
-
-        # organization_frequency_ordered = {**organization_frequency_ordered}
-        # for k,v in organization_frequency_ordered.items():
-        #     if v < 5:
-        #         organization_frequency_ordered.pop(k,v)
-        
-        # other_frequency_ordered = {**other_frequency_ordered}
-        # for k,v in other_frequency_ordered.items():
-        #     if v < 5:
-        #         organization_frequency_ordered.pop(k,v)
 
     except:
         print(f"""
@@ -169,8 +138,7 @@ def get_annotations(tweets):
     Total number of Tweets returned: {tweet_count}
     """)
 
-    return tweet_count, domain_frequency_ordered, entity_frequency_ordered, person_frequency_ordered, place_frequency_ordered, product_frequency_ordered, organization_frequency_ordered, other_frequency_ordered
-    print("domain_frequency_ordered", domain_frequency_ordered)
+    return tweet_count, domain_list_top, entity_list_top, person_list_top, place_list_top, product_list_top, organization_list_top, other_list_top 
 
 def get_topics_for_profile_followers():
     """

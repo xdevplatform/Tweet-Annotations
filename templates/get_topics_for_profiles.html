@@ -56,18 +56,113 @@
     <div class="card">
         <div class="card-body">
 
-            <p><b>Total number of Tweets:</b> {{ tweet_count }}</p>
+            {% if tweet_count == None %}
 
+                <p><b>Total number of Tweets analyzed:</b> 0</p>
+            
+            {% else %}
 
-            <p><b>Top annotation domains:</b> {{ domain }}
-            <p><b>Top annotation entities:</b> {{ entity }}</p>
-            <p><b>Top people:</b> {{ person }}</p>
-            <p><b>Top places:</b> {{ place }}</p>
-            <p><b>Top products:</b> {{ product }}</p>
-            <p><b>Top organizations:</b> {{ organization }}</p>
-            <p><b>Other topics:</b> {{ other }}</p>
-            <sup>Note: this application only displays entities with a probability score >= 0.5. In addition, only annotations and entities that have been mentioned 5 times or more are returned.</sup>
-            <sup>Read more about Tweet Annotations in <a href="https://developer.twitter.com/en/docs/twitter-api/annotations" >our documentation</a></sup>
+                <p><b>Total number of Tweets analyzed:</b> {{ tweet_count }}</p>
+
+            {% endif %}
+
+            {% if domain == None or domain == {} %}
+
+            {% else %}
+
+                <p><b>Top annotation domains:</b>
+                    <ul>
+                        {% for k, v in domain.items() %}
+                            <li>{{ k }} ({{ v }})</li>
+                        {% endfor %}
+                    </ul>
+            
+            {% endif %}
+
+            {% if entity == None or entity == {} %}
+
+            {% else %}
+
+                <p><b>Top annotation entities:</b>
+                    <ul>
+                        {% for k, v in entity.items() %}
+                            <li>{{ k }} ({{ v }})</li>
+                        {% endfor %}
+                    </ul>
+            
+            {% endif %}
+
+            {% if person == None or person == {} %}
+
+            {% else %}
+
+                <p><b>Top people:</b>
+                    <ul>
+                        {% for k, v in person.items() %}
+                            <li>{{ k }} ({{ v }})</li>
+                        {% endfor %}
+                    </ul>
+            
+            {% endif %}
+
+            {% if place == None or place == {} %}
+
+            {% else %}
+
+                <p><b>Top places:</b>
+                    <ul>
+                        {% for k, v in place.items() %}
+                            <li>{{ k }} ({{ v }})</li>
+                        {% endfor %}
+                    </ul>
+            
+            {% endif %}
+
+            {% if product == None or product == {} %}
+
+            {% else %}
+
+                <p><b>Top products:</b>
+                    <ul>
+                        {% for k, v in product.items() %}
+                            <li>{{ k }} ({{ v }})</li>
+                        {% endfor %}
+                    </ul>
+            
+            {% endif %}
+
+            {% if organization == None or organization == {} %}
+
+            {% else %}
+
+                <p><b>Top organizations:</b>
+                    <ul>
+                        {% for k, v in organization.items() %}
+                            <li>{{ k }} ({{ v }})</li>
+                        {% endfor %}
+                    </ul>
+            
+            {% endif %}
+
+            {% if other == None or other == {} %}
+
+            {% else %}
+
+                <p><b>Other frequent topics:</b>
+                    <ul>
+                        {% for k, v in other.items() %}
+                            <li>{{ k }} ({{ v }})</li>
+                        {% endfor %}
+                    </ul>
+            
+            {% endif %}
+
+            <br>
+            <sup>This application only displays annotations and entities that are present in 2+ Tweets.</sup>
+            <br>
+            <sup>In addition, only entities with a probability score >= 0.5 are displayed.</sup>
+            <br>
+            <sup>Read more about Tweet Annotations in <a href="https://developer.twitter.com/en/docs/twitter-api/annotations" >our documentation</a>.</sup>
         </div>
     </div>
     
