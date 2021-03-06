@@ -6,167 +6,169 @@
 
 {% block content %}
 
-<div class="card">
-    <div class="card-body">
-        <p>Find out what topics a user Tweets the most about.</p>
-        <p>Insert the username below:</p>
+    <div class="card">
+        <div class="card-body">
+            <p>Find out what topics a user Tweets the most about.</p>
+            <p>Insert the username below:</p>
+        </div>
     </div>
-</div>
 
-<form action="" method="POST" novalidate>
-    {{ form.hidden_tag() }}
-    <p>
+    <form action="" method="POST" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            <br>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}
+        </p>
+        <input class="btn btn-sm btn-primary" type="submit" value="Submit">
         <br>
-        {{ form.username.label }}<br>
-        {{ form.username(size=32) }}
-    </p>
-    <input class="btn btn-sm btn-primary" type="submit" value="Submit">
-    <br>
-</form>
+    </form>
 
 {% endblock %}
 
 {% block results %}
 
-{% if annotations_data == 0 %}
+    {% if annotations_data == 0 %}
 
-    <div class="card">
-        <div class="card-body">
-        <p>Invalid username.</p>
+        <div class="card">
+            <div class="card-body">
+                <p>Invalid username.</p>
+            </div>
         </div>
-    </div>
 
-{% elif annotations_data == 1 %}
+    {% elif annotations_data == 1 %}
 
-    <div class="card">
-        <div class="card-body">
-        <p>Oops! Something went wrong, response code: {{ response_code }} Try again later.</p>
+        <div class="card">
+            <div class="card-body">
+                <p>Oops! Something went wrong.</p> 
+                <p>Response code: {{ response_code }}</p>
+                <p>Try again later.</p>
+            </div>
         </div>
-    </div>
 
-{% elif tweet_count == 0 %}
+    {% elif tweet_count == 0 %}
 
-    <div class="card">
-        <div class="card-body">
-        <p>No data to analyze.</p>
+        <div class="card">
+            <div class="card-body">
+            <p>No data to analyze.</p>
+            </div>
+        </div>    
+
+    {% else %}
+
+        <div class="card">
+            <div class="card-body">
+
+                {% if tweet_count == None %}
+
+                    <p><b>Total number of Tweets analyzed:</b> 0</p>
+                
+                {% else %}
+
+                    <p><b>Total number of Tweets analyzed:</b> {{ tweet_count }}</p>
+
+                {% endif %}
+
+                {% if domain == None or domain == {} %}
+
+                {% else %}
+
+                    <p><b>Top annotation domains:</b>
+                        <ul>
+                            {% for k, v in domain.items() %}
+                                <li>{{ k }} ({{ v }})</li>
+                            {% endfor %}
+                        </ul>
+                
+                {% endif %}
+
+                {% if entity == None or entity == {} %}
+
+                {% else %}
+
+                    <p><b>Top annotation entities:</b>
+                        <ul>
+                            {% for k, v in entity.items() %}
+                                <li>{{ k }} ({{ v }})</li>
+                            {% endfor %}
+                        </ul>
+                
+                {% endif %}
+
+                {% if person == None or person == {} %}
+
+                {% else %}
+
+                    <p><b>Top people:</b>
+                        <ul>
+                            {% for k, v in person.items() %}
+                                <li>{{ k }} ({{ v }})</li>
+                            {% endfor %}
+                        </ul>
+                
+                {% endif %}
+
+                {% if place == None or place == {} %}
+
+                {% else %}
+
+                    <p><b>Top places:</b>
+                        <ul>
+                            {% for k, v in place.items() %}
+                                <li>{{ k }} ({{ v }})</li>
+                            {% endfor %}
+                        </ul>
+                
+                {% endif %}
+
+                {% if product == None or product == {} %}
+
+                {% else %}
+
+                    <p><b>Top products:</b>
+                        <ul>
+                            {% for k, v in product.items() %}
+                                <li>{{ k }} ({{ v }})</li>
+                            {% endfor %}
+                        </ul>
+                
+                {% endif %}
+
+                {% if organization == None or organization == {} %}
+
+                {% else %}
+
+                    <p><b>Top organizations:</b>
+                        <ul>
+                            {% for k, v in organization.items() %}
+                                <li>{{ k }} ({{ v }})</li>
+                            {% endfor %}
+                        </ul>
+                
+                {% endif %}
+
+                {% if other == None or other == {} %}
+
+                {% else %}
+
+                    <p><b>Other frequent topics:</b>
+                        <ul>
+                            {% for k, v in other.items() %}
+                                <li>{{ k }} ({{ v }})</li>
+                            {% endfor %}
+                        </ul>
+                
+                {% endif %}
+
+                <br>
+                <sup>This application only displays annotations and entities that are present in at least 2 Tweets.</sup>
+                <br>
+                <sup>In addition, only entities with a probability score >= 0.5 are displayed.</sup>
+                <br>
+                <sup>Read more about Tweet Annotations in <a href="https://developer.twitter.com/en/docs/twitter-api/annotations" >our documentation</a>.</sup>
+            </div>
         </div>
-    </div>    
-
-{% else %}
-
-    <div class="card">
-        <div class="card-body">
-
-            {% if tweet_count == None %}
-
-                <p><b>Total number of Tweets analyzed:</b> 0</p>
-            
-            {% else %}
-
-                <p><b>Total number of Tweets analyzed:</b> {{ tweet_count }}</p>
-
-            {% endif %}
-
-            {% if domain == None or domain == {} %}
-
-            {% else %}
-
-                <p><b>Top annotation domains:</b>
-                    <ul>
-                        {% for k, v in domain.items() %}
-                            <li>{{ k }} ({{ v }})</li>
-                        {% endfor %}
-                    </ul>
-            
-            {% endif %}
-
-            {% if entity == None or entity == {} %}
-
-            {% else %}
-
-                <p><b>Top annotation entities:</b>
-                    <ul>
-                        {% for k, v in entity.items() %}
-                            <li>{{ k }} ({{ v }})</li>
-                        {% endfor %}
-                    </ul>
-            
-            {% endif %}
-
-            {% if person == None or person == {} %}
-
-            {% else %}
-
-                <p><b>Top people:</b>
-                    <ul>
-                        {% for k, v in person.items() %}
-                            <li>{{ k }} ({{ v }})</li>
-                        {% endfor %}
-                    </ul>
-            
-            {% endif %}
-
-            {% if place == None or place == {} %}
-
-            {% else %}
-
-                <p><b>Top places:</b>
-                    <ul>
-                        {% for k, v in place.items() %}
-                            <li>{{ k }} ({{ v }})</li>
-                        {% endfor %}
-                    </ul>
-            
-            {% endif %}
-
-            {% if product == None or product == {} %}
-
-            {% else %}
-
-                <p><b>Top products:</b>
-                    <ul>
-                        {% for k, v in product.items() %}
-                            <li>{{ k }} ({{ v }})</li>
-                        {% endfor %}
-                    </ul>
-            
-            {% endif %}
-
-            {% if organization == None or organization == {} %}
-
-            {% else %}
-
-                <p><b>Top organizations:</b>
-                    <ul>
-                        {% for k, v in organization.items() %}
-                            <li>{{ k }} ({{ v }})</li>
-                        {% endfor %}
-                    </ul>
-            
-            {% endif %}
-
-            {% if other == None or other == {} %}
-
-            {% else %}
-
-                <p><b>Other frequent topics:</b>
-                    <ul>
-                        {% for k, v in other.items() %}
-                            <li>{{ k }} ({{ v }})</li>
-                        {% endfor %}
-                    </ul>
-            
-            {% endif %}
-
-            <br>
-            <sup>This application only displays annotations and entities that are present in 2+ Tweets.</sup>
-            <br>
-            <sup>In addition, only entities with a probability score >= 0.5 are displayed.</sup>
-            <br>
-            <sup>Read more about Tweet Annotations in <a href="https://developer.twitter.com/en/docs/twitter-api/annotations" >our documentation</a>.</sup>
-        </div>
-    </div>
-    
-{% endif %}
+        
+    {% endif %}
 
 {% endblock %}

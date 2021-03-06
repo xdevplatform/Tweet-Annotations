@@ -28,22 +28,143 @@
 
 {% block results %}
 
-{% if annotations_data == 0 %}
+    {% if annotations_data == 0 %}
 
-    <div class="card">
-        <div class="card-body">
-        <p>Invalid username.</p>
+        <div class="card">
+            <div class="card-body">
+            <p>Invalid username.</p>
+            </div>
         </div>
-    </div>
 
-{% elif annotations_data == 1 %}
+    {% elif annotations_data == 1 %}
 
-    <div class="card">
-        <div class="card-body">
-        <p>Oops! Something went wrong, response code: {{ response_code }} Try again later.</p>
+        <div class="card">
+            <div class="card-body">
+            <p>Oops! Something went wrong, response code: {{ response_code }} Try again later.</p>
+            </div>
         </div>
-    </div>
 
-{% endif %}
+    {% elif tweet_count == 0 %}
+
+        <div class="card">
+            <div class="card-body">
+            <p>No data to analyze.</p>
+            </div>
+        </div>    
+
+    {% else %}
+
+        <div class="card">
+            <div class="card-body">
+
+                {% if tweet_count == 0 %}
+
+                    <p><b>Total number of follower Tweets analyzed:</b> 0</p>
+                
+                {% else %}
+
+                    <p><b>Total number of follower Tweets analyzed:</b> {{ tweet_count }}</p>
+
+                {% endif %}
+
+                {% if domain == {} %}
+
+                {% else %}
+
+                    <p><b>Top annotation domains:</b>
+                        <ul>
+                            {% for k, v in domain.items() %}
+                                <li>{{ k }} ({{ v }})</li>
+                            {% endfor %}
+                        </ul>
+                
+                {% endif %}
+
+                {% if entity == {} %}
+
+                {% else %}
+
+                    <p><b>Top annotation entities:</b>
+                        <ul>
+                            {% for k, v in entity.items() %}
+                                <li>{{ k }} ({{ v }})</li>
+                            {% endfor %}
+                        </ul>
+                
+                {% endif %}
+
+                {% if person == {} %}
+
+                {% else %}
+
+                    <p><b>Top people:</b>
+                        <ul>
+                            {% for k, v in person.items() %}
+                                <li>{{ k }} ({{ v }})</li>
+                            {% endfor %}
+                        </ul>
+                
+                {% endif %}
+
+                {% if place == {} %}
+
+                {% else %}
+
+                    <p><b>Top places:</b>
+                        <ul>
+                            {% for k, v in place.items() %}
+                                <li>{{ k }} ({{ v }})</li>
+                            {% endfor %}
+                        </ul>
+                
+                {% endif %}
+
+                {% if product == {} %}
+
+                {% else %}
+
+                    <p><b>Top products:</b>
+                        <ul>
+                            {% for k, v in product.items() %}
+                                <li>{{ k }} ({{ v }})</li>
+                            {% endfor %}
+                        </ul>
+                
+                {% endif %}
+
+                {% if organization == {} %}
+
+                {% else %}
+
+                    <p><b>Top organizations:</b>
+                        <ul>
+                            {% for k, v in organization.items() %}
+                                <li>{{ k }} ({{ v }})</li>
+                            {% endfor %}
+                        </ul>
+                
+                {% endif %}
+
+                {% if other == {} %}
+
+                {% else %}
+
+                    <p><b>Other frequent topics:</b>
+                        <ul>
+                            {% for k, v in other.items() %}
+                                <li>{{ k }} ({{ v }})</li>
+                            {% endfor %}
+                        </ul>
+                
+                {% endif %}
+
+                <br>
+                <sup>This application takes a (deterministic) random sample of the user's follower base and analyzes the last 50 Tweets sent by each follower.</sup>
+                <br>
+                <sup>Read more about Tweet Annotations in <a href="https://developer.twitter.com/en/docs/twitter-api/annotations" >our documentation</a>.</sup>
+            </div>
+        </div>
+        
+    {% endif %}
 
 {% endblock %}

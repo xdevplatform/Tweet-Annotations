@@ -105,7 +105,9 @@ def get_user_followers(user_id):
 
 def random_selection(followers, follower_count):
     
+    # Randomly select 50 followers, from whom to analyze annotations data.
     if follower_count > 50: 
+        # .seed() method makes the random selection deterministic
         random.seed(56)
         selection = random.sample(followers, k=50)
     else: 
@@ -169,7 +171,7 @@ def get_annotations(tweets):
         organization_frequency_ordered = {k: v for k, v in sorted(organization_frequency.items(), key=lambda item: item[1], reverse=True)}
         other_frequency_ordered = {k: v for k, v in sorted(other_frequency.items(), key=lambda item: item[1], reverse=True)}
 
-        # Only returns annotations and entities that are present in 2+ Tweets.
+        # Only returns annotations and entities that are present in at least 2+ Tweets.
         domain_list_top = {k: v for k, v in domain_frequency_ordered.items() if v >= 2}
         entity_list_top = {k: v for k, v in entity_frequency_ordered.items() if v >= 2}
         person_list_top = {k: v for k, v in person_frequency_ordered.items() if v >= 2}
@@ -196,6 +198,16 @@ def get_annotations(tweets):
     """)
 
     return tweet_count, domain_list_top, entity_list_top, person_list_top, place_list_top, product_list_top, organization_list_top, other_list_top 
+
+def update_annotations(dict1, dict2):
+
+    for k, v in dict2.items():
+        if k in dict1:
+            dict1[k] += v
+        else:
+            dict1[k] = v
+
+    return dict1
 
 def get_topics_for_profile_followers():
     """
