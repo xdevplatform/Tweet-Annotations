@@ -29,8 +29,7 @@ def get_user_tweet_timeline(user_id):
 
     tweets = []
     user_tweet_timeline = ApiHandler(f"users/{user_id}/tweets", authentication)
-    #To return all 3200 available activities for the user, remove the start_time parameter from the payload below:
-    payload = {"tweet.fields": "context_annotations,entities", "max_results": "100", "start_time": "2021-03-04T12:00:00Z"}
+    payload = {"tweet.fields": "context_annotations,entities", "max_results": "100"} 
     response = user_tweet_timeline(payload)
     if response.status_code != 200:
         print("Response", response.status_code, response.text)
@@ -40,7 +39,8 @@ def get_user_tweet_timeline(user_id):
         if "data" in data:
             for tweet in data["data"]:
                 tweets.append(tweet)
-            while "next_token" in data["meta"]:
+            # Change the request_count condition below to receive more or less Tweets to analyze (100 Tweets returned per request)
+            while "next_token" in data["meta"] and request_count < 3:
                 pagination_token = data["meta"]["next_token"]
                 payload.update(pagination_token=pagination_token)
                 response = user_tweet_timeline(payload)

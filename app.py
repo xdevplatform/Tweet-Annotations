@@ -1,4 +1,4 @@
-# [ ] TODO --> Add options for user (e.g. date selector in UI to select start_time parameter; parameters to tune follower base - number of followers for sample & number of Tweets for each sampled follower, etc.)
+# [ ] TODO --> Add options for user (e.g. how many Tweets are returned to analyze; parameters to tune follower base - number of followers for sample & number of Tweets for each sampled follower, etc.) 
 # [ ] TODO --> Add a cogwheel while data is being fetched in the backend
 
 import os
