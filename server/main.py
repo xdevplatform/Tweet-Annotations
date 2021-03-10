@@ -209,12 +209,63 @@ def update_annotations(dict1, dict2):
 
     return dict1
 
-def get_topics_for_profile_followers():
-    """
-    Understand topics of interest for a profile’s followers. 
-    I.e. What activities and topics are the profile’s followers Tweeting about and engaging with?
-    """
-    pass
+def get_user_by_id(user_id):        
+    
+    user_lookup = ApiHandler(f"users/{user_id}", authentication)
+    response = user_lookup(payload={"user.fields": "created_at,description,location,name,username,verified,public_metrics"})
+    
+    if response.status_code != 200:
+        print("Could not load user. Error code:", response.status_code)
+        data = json.loads(response.text)
+        created_at = None
+        description = None 
+        location = None
+        name = None
+        username = None
+        verified = None
+        metrics = None 
+    else: 
+        data = json.loads(response.text)
+        created_at = data["data"]["created_at"]
+        description = data["data"]["description"] 
+        name = data["data"]["name"]
+        username = data["data"]["username"]
+        verified = data["data"]["verified"]
+        metrics = data["data"]["public_metrics"]
+    
+    username = "@" + username
+    
+    return response.status_code, username, name, description, metrics, created_at, verified
+
+def search_tweets(topic):
+    
+    query = f"context:{topic} place_country:GB is:verified" 
+    payload = {"query": query, "expansions": "author_id", "max_results": "100"}
+    print(payload)
+    search_tweets = ApiHandler("tweets/search/recent", authentication)
+    response = search_tweets(payload)
+
+    if response.status_code != 200:
+        print("Could not fetch data. Error code:", response.status_code)
+        data = None
+    else: 
+        data = json.loads(response.text)
+
+    return data, response.status_code
+
+def get_users(data):
+    users = []
+    user_details = []
+    for tweet in data[0]["data"]:
+        user = tweet["author_id"]
+        if user not in users: 
+            users.append(user)
+
+    for user in users:
+        user_info = get_user_by_id(user)
+        user_details.append(user_info)
+
+    return (user_details)
 
 def get_profiles_for_topic():
     """
