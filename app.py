@@ -1,5 +1,9 @@
-# [ ] TODO --> Add options for user (e.g. how many Tweets are returned to analyze; parameters to tune follower base - number of followers for sample & number of Tweets for each sampled follower, etc.) 
+# [ ] TODO --> Build DB (SQLite?) that stores domains and their IDs with each new request to User Timelines or Search Tweet. Use the data in this DB to allow users to choose topics from to query users against.
+# [ ] TODO --> Add options for user (e.g. how many Tweets are returned to analyze; parameters to tune follower base - number of followers for sample & number of Tweets for each sampled follower, etc.)
 # [ ] TODO --> Add a cogwheel while data is being fetched in the backend
+# [ ] TODO --> Return example Tweets on result pages
+# [ ] TODO --> Create more of a flow between the different pages (?)
+# [ ] TODO --> #3 What content resonates with these users?? What style do they use (e.g. top emojis, etc.)?
 
 import os
 from flask import Flask, render_template, redirect

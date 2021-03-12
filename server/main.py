@@ -1,11 +1,7 @@
 import json
 import random
-from server.api_handler import (
-    ApiHandler
-)
-from server.authentication import (
-    Authentication
-)
+from server.api_handler import ApiHandler
+from server.authentication import Authentication
 
 authentication = Authentication()
 
