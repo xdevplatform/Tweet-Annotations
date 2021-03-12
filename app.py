@@ -3,8 +3,8 @@
 
 import os
 from flask import Flask, render_template, redirect
-from server.main import get_user_details, get_user_tweet_timeline, get_user_followers , get_annotations, random_selection, get_user_tweet_timeline_no_pagination, update_annotations
-from forms import GetUsername
+from server.main import get_user_details, get_user_tweet_timeline, get_user_followers , get_annotations, random_selection, get_user_tweet_timeline_no_pagination, update_annotations, search_tweets, get_users
+from forms import GetUsername, GetTopic
 
 app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
@@ -106,7 +106,20 @@ def get_topics_follower_base():
 
 @app.route('/GetProfilesForTopic', methods=["post", "get"])
 def get_profiles():
-    return render_template('get_profiles_for_topic.html', methods=["post", "get"])
+    users = []
+    form = GetTopic()
+    # [ ] TO DO --> Change form with list of domains to choose from (rather than free form submission)
+    if form.validate_on_submit():
+        topic = form.topic.data
+        tweets = search_tweets(topic)
+        if tweets == None: 
+            users = 0
+        elif "data" not in tweets[0]:
+            users = 1
+        else:
+            users = get_users(tweets)
+
+    return render_template('get_profiles_for_topic.html', form=form, users=users, methods=["post", "get"])
 
 @app.route('/GetTweetMetricsForTopic', methods=["post", "get"])
 def get_metrics():

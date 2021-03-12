@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %} Get Profiles for a Given Topic {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+    <div class="card">
+        <div class="card-body">
+            <p>Find profiles who Tweet about a topic of interest.</p>
+            <p>Input the annotation domain of interest below:</p>
+        </div>
+    </div>
+
+    <form action="" method="POST" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            <br>
+            {{ form.topic.label }}<br>
+            {{ form.topic(size=32) }}
+        </p>
+        <input class="btn btn-sm btn-primary" type="submit" value="Submit">
+        <br>
+    </form>
+
+{% endblock %}
+
+{% block results %}
+
+    {% if users == [] %}
+
+        <div class="card">
+            <div class="card-body">
+                <p></p>
+                <br>
+                <sup>For the purpose of this demo, this application only returns verified profiles based on Tweets sent from the UK in the past 7 days.</sup>
+                <br>
+                <sup>
+            </div>
+        </div>
+    
+    {% elif users == 0 %}
+
+    <div class="card">
+        <div class="card-body">
+            <p>Something went wrong. Try again later.</p>
+            <br>
+            <sup>For the purpose of this demo, this application only returns verified profiles based on Tweets sent in the past 7 days.</sup>
+            <br>
+            <sup>
+        </div>
+    </div>
+    
+    {% elif users == 1 %}
+
+    <div class="card">
+        <div class="card-body">
+            <p>No data to analyze. Try another topic.</p>
+            <br>
+            <sup>For the purpose of this demo, this application only returns verified profiles based on Tweets sent in the past 7 days.</sup>
+            <br>
+            <sup>
+        </div>
+    </div>
+
+    {% else %}
+
+        <div class="card">
+            <div class="card-body">
+                
+                {% for user in users %}
+                <ul>
+                    <li><b><a href="https://twitter.com/{{user[1]}}">{{ user[1] }},</a> {{ user[2] }}</b> <br><b>Profile description:</b> {{ user[3] }} <br><b>Profile_metrics:</b> {{ user[4] }} <br><b>Profile creation date:</b> {{ user[5] }} <br><b>Is verified:</b> {{ user[6] }}   </li>
+                </ul>
+                {% endfor %}
+
+                <br>
+                <sup>For the purpose of this demo, this application only returns verified profiles based on Tweets sent from the UK in the past 7 days.</sup>
+                <br>
+            </div>
+        </div>
+    
+    {% endif %}
+
+{% endblock %}
