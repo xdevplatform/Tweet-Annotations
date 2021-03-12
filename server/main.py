@@ -2,8 +2,24 @@ import json
 import random
 from server.api_handler import ApiHandler
 from server.authentication import Authentication
+from server.database.manage_db import create_connection
+from forms import DropdownForm
 
 authentication = Authentication()
+
+def construct_dropdown(options):
+    form = DropdownForm()
+    form.select.choices = options
+    return form
+
+def get_data_from_db(query):
+
+    connection = create_connection(r"./server/database/annotations.db")
+    cursor = connection.cursor()
+
+    cursor.execute(query)
+
+    return cursor.fetchall()
 
 def get_user_details(username):
     

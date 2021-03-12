@@ -11,3 +11,6 @@ class GetTopic(FlaskForm):
     topic = StringField(
         "Annotation (e.g. Web development)", validators=[DataRequired()]
     )
+
+class DropdownForm(FlaskForm):
+    select = SelectField("", choices=[], validators=[DataRequired()])

@@ -1,4 +1,3 @@
-# [ ] TODO --> Build DB (SQLite?) that stores domains and their IDs with each new request to User Timelines or Search Tweet. Use the data in this DB to allow users to choose topics from to query users against.
 # [ ] TODO --> Add options for user (e.g. how many Tweets are returned to analyze; parameters to tune follower base - number of followers for sample & number of Tweets for each sampled follower, etc.)
 # [ ] TODO --> Add a cogwheel while data is being fetched in the backend
 # [ ] TODO --> Return example Tweets on result pages
@@ -7,12 +6,13 @@
 
 import os
 from flask import Flask, render_template, redirect
-from server.main import get_user_details, get_user_tweet_timeline, get_user_followers , get_annotations, random_selection, get_user_tweet_timeline_no_pagination, update_annotations, search_tweets, get_users
-from forms import GetUsername, GetTopic
+from server.main import *
+from forms import GetUsername, GetTopic, DropdownForm
 
 app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
+SELECTED_DOMAIN_ID = None
 
 @app.route('/')
 def index():
@@ -110,11 +110,41 @@ def get_topics_follower_base():
 
 @app.route('/GetProfilesForTopic', methods=["post", "get"])
 def get_profiles():
+    global SELECTED_DOMAIN_ID
+
     users = []
-    form = GetTopic()
-    # [ ] TO DO --> Change form with list of domains to choose from (rather than free form submission)
-    if form.validate_on_submit():
-        topic = form.topic.data
+
+
+    query = """SELECT * FROM domains
+            ORDER by 2;
+            """
+    domains = get_data_from_db(query)
+
+    print(SELECTED_DOMAIN_ID)
+    if SELECTED_DOMAIN_ID is not None:
+        query = f"""SELECT entity_id, entity_name FROM entities
+                WHERE domain_id = {SELECTED_DOMAIN_ID} 
+                ORDER BY 2;
+                """
+        entities = get_data_from_db(query)
+    else:
+        entities = [(-1, "None")]
+
+    domains_form = construct_dropdown(domains)
+    entities_form = construct_dropdown(entities)
+
+    if domains_form.validate_on_submit():
+        domain_id = domains_form.data["select"]
+        SELECTED_DOMAIN_ID = domain_id
+        print(SELECTED_DOMAIN_ID)
+
+    if entities_form.validate_on_submit():
+        entity_id = entities_form.data["select"]
+        print(entity_id) 
+
+        topic = SELECTED_DOMAIN_ID + "." + entity_id
+        print(topic)
+
         tweets = search_tweets(topic)
         if tweets == None: 
             users = 0
@@ -123,12 +153,8 @@ def get_profiles():
         else:
             users = get_users(tweets)
 
-    return render_template('get_profiles_for_topic.html', form=form, users=users, methods=["post", "get"])
+    return render_template('get_profiles_for_topic.html', domains_form=domains_form, entities_form=entities_form, users=users, methods=["post", "get"])
 
 @app.route('/GetTweetMetricsForTopic', methods=["post", "get"])
 def get_metrics():
     return render_template('get_tweet_metrics_for_topic.html', methods=["post", "get"])
-
-# @app.route("/Error", methods=["get"])
-# def error_page():
-#     return render_template('error.html', methods=["post", "get"])
