@@ -26,6 +26,34 @@
 
 {% endblock %}
 
+{% block emojis %} 
+
+    {% if top_emojis == 0 %}
+
+        <p></p>
+
+    {% elif top_emojis == 1 %}
+
+        <div class="card">
+            <div class="card-body">
+                <p>No emojis to analyze.</p>
+            </div>
+        </div>
+    
+    {% else %}
+
+        <div class="card">
+            <div class="card-body">
+                <p>Top emojis used by this profile: {{ top_emojis }}</p>
+                <sup><i>Note: The emojis returned above were used at least 5 times in this user's Tweets and are sorted from most frequently to least frequently used.</i></sup>
+            </div>
+        </div>
+
+    {% endif %}
+
+
+{% endblock %}
+
 {% block results %}
 
     {% if annotations_data == 0 %}

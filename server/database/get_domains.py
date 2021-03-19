@@ -67,6 +67,7 @@ def initialise_annotations_db():
     if connection is not None: 
         create_table(connection, sql_create_domains_table)
         create_table(connection, sql_create_entities_table)
+        print("Success")
     else: 
         print("Error: cannot create the database connection.")
     
@@ -75,5 +76,8 @@ def initialise_annotations_db():
     connection.close()
 
 if __name__ == "__main__":
+    # Run the command below to initialise the database (and create tables) if these don't exist yet:
     # initialise_annotations_db()
+
+    # Run the script using this second command to populate the database:
     get_annotations(authentication)

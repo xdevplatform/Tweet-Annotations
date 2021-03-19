@@ -8,13 +8,14 @@
 
     <div class="card">
         <div class="card-body">
-            <p>Find profiles who Tweet about a topic of interest.</p>
-            <p>Input the annotation domain of interest below:</p>
+            <p>Find users who care about a topic of interest.</p>
+            <p>Select an annotation domain and annotation entity below:</p>
         </div>
     </div>
     <br>
     <form action="" method="post" novalidate>
         {{ domains_form.hidden_tag() }}
+        <p>1. First select a domain:</p>
         <p>
             {{domains_form.select.label}} {{domains_form.select}}
         </p>
@@ -24,12 +25,15 @@
     <br>
     <form action="" method="post" novalidate>
         {{ entities_form.hidden_tag() }}
+        <p>2. Then select an entity within that domain:</p>
         <p>
             {{entities_form.select.label}} {{entities_form.select}}
         </p>
         <input class="btn btn-sm btn-primary" type="submit" value="Submit entity">
         <br>
     </form>
+    <br>
+    <p><i>Note: the lists of domains and entities available above are not exhaustive and have been compiled for demonstrative purposes only.</i></p>
 
 {% endblock %}
 
@@ -41,7 +45,7 @@
             <div class="card-body">
                 <p></p>
                 <br>
-                <sup>For the purpose of this demo, this application only returns verified profiles based on Tweets sent from the UK in the past 7 days.</sup>
+                <sup>For the purpose of this demo, this application only returns verified profiles based on a sample of non-promoted Tweets in English from the past 7 days.</sup>
                 <br>
                 <sup>
             </div>
@@ -53,7 +57,7 @@
         <div class="card-body">
             <p>Something went wrong. Try again later.</p>
             <br>
-            <sup>For the purpose of this demo, this application only returns verified profiles based on Tweets sent in the past 7 days.</sup>
+            <sup>For the purpose of this demo, this application only returns verified profiles based on a sample of non-promoted Tweets in English from the past 7 days.</sup>
             <br>
             <sup>
         </div>
@@ -65,7 +69,7 @@
         <div class="card-body">
             <p>No data to analyze. Try another topic.</p>
             <br>
-            <sup>For the purpose of this demo, this application only returns verified profiles based on Tweets sent in the past 7 days.</sup>
+            <sup>For the purpose of this demo, this application only returns verified profiles based on a sample of non-promoted Tweets in English from the past 7 days.</sup>
             <br>
             <sup>
         </div>
@@ -78,12 +82,12 @@
                 
                 {% for user in users %}
                 <ul>
-                    <li><b><a href="https://twitter.com/{{user[1]}}">{{ user[1] }},</a> {{ user[2] }}</b> <br><b>Profile description:</b> {{ user[3] }} <br><b>Profile_metrics:</b> {{ user[4] }} <br><b>Profile creation date:</b> {{ user[5] }} <br><b>Is verified:</b> {{ user[6] }}   </li>
+                    <li><b><a href="https://twitter.com/{{user[1]}}">{{ user[0][1] }},</a> {{ user[0][2] }}</b> <br><b>Profile description:</b> {{ user[0][3] }} <br><b>Profile_metrics:</b> {{ user[0][4] }} <br><b>Profile creation date:</b> {{ user[0][5] }} <br><b>Is verified:</b> {{ user[0][6] }} <br> <blockquote class="twitter-tweet"><a href="https://twitter.com/x/status/{{ user[1] }}"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>   </li>
                 </ul>
                 {% endfor %}
 
                 <br>
-                <sup>For the purpose of this demo, this application only returns verified profiles based on Tweets sent from the UK in the past 7 days.</sup>
+                <sup>For the purpose of this demo, this application only returns verified profiles based on a sample of non-promoted Tweets in English from the past 7 days.</sup>
                 <br>
             </div>
         </div>

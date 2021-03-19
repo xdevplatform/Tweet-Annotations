@@ -6,7 +6,6 @@ def create_connection(db_file):
     connection = None
     try:
         connection = sqlite3.connect(db_file)
-        print(sqlite3.version)
     except Error as e:
         print(e)
     

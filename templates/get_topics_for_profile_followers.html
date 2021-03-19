@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block header %}
-    <h1>{% block title %} Get Frequent Topics for a Profile's Followers {% endblock %}</h1>
+    <h1>{% block title %} Get Top Interest Topics for a Profile's Followers {% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
 
 <div class="card">
     <div class="card-body">
-      <p>What topics do your followers Tweet about the most?</p>
+      <p>What topics do your followers care about the most?</p>
       <p>Input a username below:</p>
     </div>
 </div>
@@ -23,6 +23,34 @@
     <input class="btn btn-sm btn-primary" type="submit" value="Submit">
     <br>
 </form>
+
+{% endblock %}
+
+{% block emojis %} 
+
+    {% if top_emojis == 0 %}
+
+        <p> </p>
+
+    {% elif top_emojis == 1 %}
+
+        <div class="card">
+            <div class="card-body">
+                <p>No emojis to analyze.</p>
+            </div>
+        </div>
+    
+    {% else %}
+
+        <div class="card">
+            <div class="card-body">
+                <p>Top emojis used by this profile's followers: {{ top_emojis }}</p>
+                <sup><i>Note: The emojis returned above were present at least 3 times in Tweets from this profile's followers. They are sorted from most frequently to least frequently used.</i></sup>
+            </div>
+        </div>
+
+    {% endif %}
+
 
 {% endblock %}
 

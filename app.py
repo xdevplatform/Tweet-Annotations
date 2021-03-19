@@ -1,8 +1,8 @@
 # [ ] TODO --> Add options for user (e.g. how many Tweets are returned to analyze; parameters to tune follower base - number of followers for sample & number of Tweets for each sampled follower, etc.)
 # [ ] TODO --> Add a cogwheel while data is being fetched in the backend
-# [ ] TODO --> Return example Tweets on result pages
+# [ ] TODO --> Return example Tweets on result pages for functionality #4
 # [ ] TODO --> Create more of a flow between the different pages (?)
-# [ ] TODO --> #3 What content resonates with these users?? What style do they use (e.g. top emojis, etc.)?
+# [ ] TODO --> Go more granular than the annotation domain. Make sure to return the annotation entity when displaying graphs.
 
 import os
 from flask import Flask, render_template, redirect
@@ -20,6 +20,7 @@ def index():
 
 @app.route('/GetTopicsForProfiles', methods=["post", "get"])
 def get_topics_profile():
+    top_emojis = 0
     form = GetUsername()
     response_code = None
     tweet_count = None
@@ -42,16 +43,18 @@ def get_topics_profile():
                 annotations_data = 1
             else: 
                 tweet_count, domain, entity, person, place, product, organization, other = get_annotations(user_timeline_tweets)
+                top_emojis_results = get_style(user_timeline_tweets, 4)
+                top_emojis = " ".join(k for k, v in top_emojis_results.items())
     
-    print("DOMAIN", domain)
-    
-    return render_template('get_topics_for_profiles.html', form=form, annotations_data=annotations_data, tweet_count=tweet_count, domain=domain, entity=entity, person=person, place=place, product=product, organization=organization, other=other, response_code=response_code, methods=["post", "get"])
+    return render_template('get_topics_for_profiles.html', form=form, annotations_data=annotations_data, top_emojis=top_emojis, tweet_count=tweet_count, domain=domain, entity=entity, person=person, place=place, product=product, organization=organization, other=other, response_code=response_code, methods=["post", "get"])
 
 @app.route('/GetTopicsForProfileFollowers', methods=["post", "get"])
 def get_topics_follower_base():
     form = GetUsername()
     annotations_data = None
     response_code = None
+    top_emojis= 0
+    all_emojis = {}
     all_domain = {}
     all_entity = {} 
     all_person = {} 
@@ -79,6 +82,7 @@ def get_topics_follower_base():
                         annotations_data = 1
                     else:
                         count, domain, entity, person, place, product, organization, other = get_annotations(user_tweets)
+                        top_emojis_results = get_style(user_tweets, 0)
                         tweet_count += count
                         all_domain = update_annotations(all_domain, domain)
                         all_entity = update_annotations(all_entity, entity)
@@ -87,6 +91,15 @@ def get_topics_follower_base():
                         all_product = update_annotations(all_product, product)
                         all_organization = update_annotations(all_organization, organization)
                         all_other = update_annotations(all_other, other)
+                        if top_emojis_results != 1:
+                            all_emojis = update_annotations(all_emojis, top_emojis_results)
+                
+                if len(all_emojis) != 0:
+                    top_emojis_unsorted = {k:v for (k,v) in all_emojis.items() if v > 2}
+                    top_emojis_sorted = {k: v for k, v in sorted(top_emojis_unsorted.items(), key=lambda item: item[1], reverse=True)}
+                    top_emojis = " ".join(k for k, v in top_emojis_sorted.items()) 
+                elif len(all_emojis) == 0:
+                    top_emojis = 1
 
     # Sort annotations by order of frequency
     all_domain_ordered = {k: v for k, v in sorted(all_domain.items(), key=lambda item: item[1], reverse=True)}
@@ -105,8 +118,8 @@ def get_topics_follower_base():
     all_product = {k: v for k, v in all_product_ordered.items() if v >= 2}
     all_organization = {k: v for k, v in all_organization_ordered.items() if v >= 2}
     all_other = {k: v for k, v in all_other_ordered.items() if v >= 2}
-
-    return render_template('get_topics_for_profile_followers.html', form=form, annotations_data=annotations_data, tweet_count=tweet_count, domain=all_domain, entity=all_entity, person=all_person, place=all_place, product=all_product, organization=all_organization, other=all_other, response_code=response_code, methods=["post", "get"])
+    
+    return render_template('get_topics_for_profile_followers.html', form=form, annotations_data=annotations_data, tweet_count=tweet_count, top_emojis=top_emojis, domain=all_domain, entity=all_entity, person=all_person, place=all_place, product=all_product, organization=all_organization, other=all_other, response_code=response_code, methods=["post", "get"])
 
 @app.route('/GetProfilesForTopic', methods=["post", "get"])
 def get_profiles():
@@ -114,13 +127,11 @@ def get_profiles():
 
     users = []
 
-
     query = """SELECT * FROM domains
             ORDER by 2;
             """
     domains = get_data_from_db(query)
 
-    print(SELECTED_DOMAIN_ID)
     if SELECTED_DOMAIN_ID is not None:
         query = f"""SELECT entity_id, entity_name FROM entities
                 WHERE domain_id = {SELECTED_DOMAIN_ID} 
@@ -136,14 +147,11 @@ def get_profiles():
     if domains_form.validate_on_submit():
         domain_id = domains_form.data["select"]
         SELECTED_DOMAIN_ID = domain_id
-        print(SELECTED_DOMAIN_ID)
 
     if entities_form.validate_on_submit():
         entity_id = entities_form.data["select"]
-        print(entity_id) 
 
         topic = SELECTED_DOMAIN_ID + "." + entity_id
-        print(topic)
 
         tweets = search_tweets(topic)
         if tweets == None: 

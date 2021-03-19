@@ -1,5 +1,8 @@
 import json
 import random
+import emoji
+import regex
+from collections import Counter
 from server.api_handler import ApiHandler
 from server.authentication import Authentication
 from server.database.manage_db import create_connection
@@ -127,6 +130,42 @@ def random_selection(followers, follower_count):
     
     return selection
 
+def get_style(tweets, value):
+    text = " "
+
+    for tweet in tweets:
+        text = text + tweet["text"]
+    
+    emoji_list = []
+
+    emojis = emoji.UNICODE_EMOJI['en'].keys()
+
+    data = regex.findall(r'\X', text)
+
+    for symbol in data:
+        for char in symbol:
+            if char in emojis:
+                emoji_list.append(symbol)
+                break
+    
+    # print(emoji_list)
+    # print(len(emoji_list))
+
+    if len(emoji_list) > 0:
+        emoji_count = Counter(emoji_list)
+        emoji_dict = {}
+        for i in emoji_count:
+            k = i
+            v = emoji_count[i]
+            emoji_dict[k] = v
+        top_emojis_unsorted = {k:v for (k,v) in emoji_dict.items() if v > value}
+        top_emojis = {k: v for k, v in sorted(top_emojis_unsorted.items(), key=lambda item: item[1], reverse=True)}
+    else: 
+        top_emojis = 1
+        print("No emojis to analyze")
+    
+    return top_emojis
+
 def get_annotations(tweets):
     
     domain = []
@@ -205,9 +244,9 @@ def get_annotations(tweets):
         organization_frequency_ordered = None
         other_frequency_ordered = None
 
-    print(f"""
-    Total number of Tweets returned: {tweet_count}
-    """)
+    # print(f"""
+    # Total number of Tweets returned: {tweet_count}
+    # """)
 
     return tweet_count, domain_list_top, entity_list_top, person_list_top, place_list_top, product_list_top, organization_list_top, other_list_top 
 
@@ -251,9 +290,8 @@ def get_user_by_id(user_id):
 
 def search_tweets(topic):
     
-    query = f"context:{topic} place_country:GB is:verified" 
-    payload = {"query": query, "expansions": "author_id", "max_results": "100"}
-    print(payload)
+    query = f"context:{topic} is:verified -is:nullcast lang:en" 
+    payload = {"query": query, "expansions": "author_id", "max_results": "50"}
     search_tweets = ApiHandler("tweets/search/recent", authentication)
     response = search_tweets(payload)
 
@@ -270,12 +308,15 @@ def get_users(data):
     user_details = []
     for tweet in data[0]["data"]:
         user = tweet["author_id"]
+        tweet_id = tweet["id"]
         if user not in users: 
-            users.append(user)
+            users.append([user, tweet_id])
 
-    for user in users:
+    for item in users:
+        user = item[0]
+        tweet_id = item[1]
         user_info = get_user_by_id(user)
-        user_details.append(user_info)
+        user_details.append([user_info, tweet_id])
 
     return (user_details)
 
