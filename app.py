@@ -1,13 +1,11 @@
-# [ ] TODO --> Add options for user (e.g. how many Tweets are returned to analyze; parameters to tune follower base - number of followers for sample & number of Tweets for each sampled follower, etc.)
-# [ ] TODO --> Add a cogwheel while data is being fetched in the backend
-# [ ] TODO --> Return example Tweets on result pages for functionality #4
-# [ ] TODO --> Create more of a flow between the different pages (?)
-# [ ] TODO --> Go more granular than the annotation domain. Make sure to return the annotation entity when displaying graphs.
+# [ ] TODO --> Add options for user (e.g. how many Tweets are returned to analyze; location for which to get Tweets, parameters to tune follower base - number of followers for sample & number of Tweets for each sampled follower, etc.)
+# [ ] TODO --> Add a cogwheel while data is being fetched in the backend.
+# [ ] TODO --> Add visual charts: go more granular than the annotation domain. Make sure to return the annotation entity when displaying graphs.
 
 import os
 from flask import Flask, render_template, redirect
 from server.main import *
-from forms import GetUsername, GetTopic, DropdownForm
+from forms import GetUsername, GetTopic, DropdownForm, GetKeyword
 
 app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
@@ -63,6 +61,7 @@ def get_topics_follower_base():
     all_organization = {} 
     all_other = {}
     tweet_count = 0
+    follower_count = 0
     if form.validate_on_submit():
         username = form.username.data
         username, user_id = get_user_details(username)
@@ -70,6 +69,7 @@ def get_topics_follower_base():
             annotations_data = 0
         else: 
             user_followers, response_code = get_user_followers(user_id)
+            follower_count = len(user_followers)
             if response_code != 200:
                 annotations_data = 1
             else: 
@@ -119,7 +119,7 @@ def get_topics_follower_base():
     all_organization = {k: v for k, v in all_organization_ordered.items() if v >= 2}
     all_other = {k: v for k, v in all_other_ordered.items() if v >= 2}
     
-    return render_template('get_topics_for_profile_followers.html', form=form, annotations_data=annotations_data, tweet_count=tweet_count, top_emojis=top_emojis, domain=all_domain, entity=all_entity, person=all_person, place=all_place, product=all_product, organization=all_organization, other=all_other, response_code=response_code, methods=["post", "get"])
+    return render_template('get_topics_for_profile_followers.html', form=form, follower_count=follower_count, annotations_data=annotations_data, tweet_count=tweet_count, top_emojis=top_emojis, domain=all_domain, entity=all_entity, person=all_person, place=all_place, product=all_product, organization=all_organization, other=all_other, response_code=response_code, methods=["post", "get"])
 
 @app.route('/GetProfilesForTopic', methods=["post", "get"])
 def get_profiles():
@@ -147,13 +147,21 @@ def get_profiles():
     if domains_form.validate_on_submit():
         domain_id = domains_form.data["select"]
         SELECTED_DOMAIN_ID = domain_id
+        
+        query = f"""SELECT entity_id, entity_name FROM entities
+                WHERE domain_id = {SELECTED_DOMAIN_ID} 
+                ORDER BY 2;
+                """
+        entities = get_data_from_db(query)
+        entities_form = construct_dropdown(entities)
 
     if entities_form.validate_on_submit():
         entity_id = entities_form.data["select"]
 
         topic = SELECTED_DOMAIN_ID + "." + entity_id
-
-        tweets = search_tweets(topic)
+        
+        query = f"context:{topic} is:verified -is:nullcast lang:en"
+        tweets = search_tweets(query)
         if tweets == None: 
             users = 0
         elif "data" not in tweets[0]:
@@ -165,4 +173,36 @@ def get_profiles():
 
 @app.route('/GetTweetMetricsForTopic', methods=["post", "get"])
 def get_metrics():
-    return render_template('get_tweet_metrics_for_topic.html', methods=["post", "get"])
+    form = GetKeyword()
+    keyword = None
+    status_code = None
+    tweet_ids = []
+    tweet_count = 0
+    retweet_count = 0
+    like_count = 0
+    reply_count = 0
+    quote_count = 0
+    if form.validate_on_submit():
+        keyword = form.keyword.data
+        query = f"{keyword} place_country:GB -is:retweet -is:reply -is:nullcast lang:en" 
+        tweets, status_code = search_tweets_with_pagination(query)
+
+        tweet_count = len(tweets)
+
+        if status_code != 200:
+            keyword = 1
+        else: 
+            if tweets == None:
+                keyword = 1
+            elif tweet_count < 1:
+                keyword = 0
+            else:
+                for i, tweet in enumerate(tweets):
+                    if i > 5:
+                        break
+                    if tweet["id"]:
+                        tweet_ids.append(tweet["id"])
+
+        retweet_count, like_count, reply_count, quote_count = get_tweet_metrics(tweets)
+
+    return render_template('get_tweet_metrics_for_topic.html', form=form, tweet_ids=tweet_ids, status_code=status_code, tweet_count=tweet_count, keyword=keyword, retweet_count=retweet_count, like_count=like_count, reply_count=reply_count, quote_count=quote_count, methods=["post", "get"])

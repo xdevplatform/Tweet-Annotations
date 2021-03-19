@@ -162,7 +162,7 @@ def get_style(tweets, value):
         top_emojis = {k: v for k, v in sorted(top_emojis_unsorted.items(), key=lambda item: item[1], reverse=True)}
     else: 
         top_emojis = 1
-        print("No emojis to analyze")
+        # print("No emojis to analyze")
     
     return top_emojis
 
@@ -288,9 +288,8 @@ def get_user_by_id(user_id):
     
     return response.status_code, username, name, description, metrics, created_at, verified
 
-def search_tweets(topic):
+def search_tweets(query):
     
-    query = f"context:{topic} is:verified -is:nullcast lang:en" 
     payload = {"query": query, "expansions": "author_id", "max_results": "50"}
     search_tweets = ApiHandler("tweets/search/recent", authentication)
     response = search_tweets(payload)
@@ -302,6 +301,60 @@ def search_tweets(topic):
         data = json.loads(response.text)
 
     return data, response.status_code
+
+def search_tweets_with_pagination(query):
+
+    payload = {"query": query, "tweet.fields": "public_metrics", "max_results": "100"}
+    print(payload)
+    search_tweets = ApiHandler("tweets/search/recent", authentication)
+    response = search_tweets(payload)
+
+    results = []
+
+    if response.status_code != 200:
+        print("Could not fetch data. Error code:", response.status_code)
+        data = None
+    else: 
+        data = json.loads(response.text)
+        request_count = 1
+        if "data" in data:
+            for tweet in data["data"]:
+                results.append(tweet)
+                while "next_token" in data["meta"]:
+                    next_token = data["meta"]["next_token"]
+                    payload.update(next_token=next_token)
+                    response = search_tweets(payload)
+                    if response.status_code != 200:
+                        print("Could not fetch data. Error code:", response.status_code)
+                        break
+                    data = json.loads(response.text)
+                    request_count += 1
+                    if "data" in data:
+                        for tweet in data["data"]:
+                            results.append(tweet)
+                # print("Request count:", request_count)
+                # print("Code", response.status_code)
+            
+    return results, response.status_code
+
+def get_tweet_metrics(tweets):
+
+    retweet_count = 0
+    like_count = 0
+    reply_count = 0
+    quote_count = 0
+
+    for tweet in tweets: 
+        if tweet["public_metrics"]["retweet_count"]:
+            retweet_count += tweet["public_metrics"]["retweet_count"] 
+        if tweet["public_metrics"]["reply_count"]:
+            reply_count += tweet["public_metrics"]["reply_count"] 
+        if tweet["public_metrics"]["like_count"]:
+            like_count += tweet["public_metrics"]["like_count"]
+        if tweet["public_metrics"]["quote_count"]:
+            quote_count += tweet["public_metrics"]["quote_count"]
+
+    return retweet_count, like_count, reply_count, quote_count
 
 def get_users(data):
     users = []

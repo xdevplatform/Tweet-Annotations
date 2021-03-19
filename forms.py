@@ -7,6 +7,11 @@ class GetUsername(FlaskForm):
         "Twitter username", validators=[DataRequired()]
     )
 
+class GetKeyword(FlaskForm):
+    keyword = StringField(
+        "Insert a topic of interest below (e.g. skiing):", validators=[DataRequired()]
+    )
+
 class GetTopic(FlaskForm):
     topic = StringField(
         "Annotation (e.g. Web development)", validators=[DataRequired()]
