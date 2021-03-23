@@ -2,6 +2,7 @@ import os
 import yaml
 from requests_oauthlib import OAuth1, OAuth1Session
 
+
 class Authentication:
     """
     Class to handle Twitter credentials to access the API.
@@ -12,14 +13,16 @@ class Authentication:
         Get app credentials from YAML file.
         """
 
-        with open(r'./credentials.yaml') as file:
+        with open(r"./credentials.yaml") as file:
             credentials = yaml.load(file, Loader=yaml.FullLoader)
-    
-        self.API_KEY = credentials['v2-app-credentials']['API_KEY']
-        self.API_SECRET = credentials['v2-app-credentials']['API_SECRET']
-        self.ACCESS_TOKEN = credentials['v2-app-credentials']['ACCESS_TOKEN']
-        self.ACCESS_TOKEN_SECRET = credentials['v2-app-credentials']['ACCESS_TOKEN_SECRET']
-        self.BEARER_TOKEN = credentials['v2-app-credentials']['BEARER_TOKEN']
+
+        self.API_KEY = credentials["v2-app-credentials"]["API_KEY"]
+        self.API_SECRET = credentials["v2-app-credentials"]["API_SECRET"]
+        self.ACCESS_TOKEN = credentials["v2-app-credentials"]["ACCESS_TOKEN"]
+        self.ACCESS_TOKEN_SECRET = credentials["v2-app-credentials"][
+            "ACCESS_TOKEN_SECRET"
+        ]
+        self.BEARER_TOKEN = credentials["v2-app-credentials"]["BEARER_TOKEN"]
 
     def generate_oauth1(self):
         """
@@ -42,9 +45,7 @@ class Authentication:
         :return: OAuth1 session.
         """
 
-        return OAuth1Session(
-            client_key=self.API_KEY, client_secret=self.API_SECRET
-        )
+        return OAuth1Session(client_key=self.API_KEY, client_secret=self.API_SECRET)
 
     def bearer_oauth(self, r):
         """

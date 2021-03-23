@@ -6,6 +6,7 @@ from authentication import Authentication
 
 authentication = Authentication()
 
+
 def get_annotations(authentication):
 
     connection = create_connection(r"./annotations.db")
@@ -25,30 +26,31 @@ def get_annotations(authentication):
         if "context_annotations" in json_response["data"]:
             for item in json_response["data"]["context_annotations"]:
                 domain_id = item["domain"]["id"]
-                domain_name = item["domain"]["name"] 
-                entity_id = item["entity"]["id"] 
-                entity_name = item["entity"]["name"] 
+                domain_name = item["domain"]["name"]
+                entity_id = item["entity"]["id"]
+                entity_name = item["entity"]["name"]
 
                 sql = f""" INSERT OR IGNORE INTO domains (domain_id, domain_name)
                            VALUES ('{domain_id}', '{domain_name}');
                        """
-                
+
                 print(sql)
                 cursor.execute(sql)
-                
+
                 sql = f""" INSERT OR IGNORE INTO entities (entity_id, entity_name, domain_id)
                            VALUES ('{entity_id}', '{entity_name}', '{domain_id}');
-                       """ 
-                
+                       """
+
                 print(sql)
                 cursor.execute(sql)
                 connection.commit()
 
     # Close database connection
-    connection.close()     
+    connection.close()
+
 
 def initialise_annotations_db():
-    
+
     sql_create_domains_table = """ CREATE TABLE IF NOT EXISTS domains (
                                               domain_id text NOT NULL PRIMARY KEY,
                                               domain_name text NOT NULL
@@ -63,17 +65,18 @@ def initialise_annotations_db():
     # Create a DB connection
     connection = create_connection(r"./annotations.db")
 
-    #Create tables for annotation domains and for annotation entities
-    if connection is not None: 
+    # Create tables for annotation domains and for annotation entities
+    if connection is not None:
         create_table(connection, sql_create_domains_table)
         create_table(connection, sql_create_entities_table)
         print("Success")
-    else: 
+    else:
         print("Error: cannot create the database connection.")
-    
+
     # Close database connection
     connection.commit()
     connection.close()
+
 
 if __name__ == "__main__":
     # Run the command below to initialise the database (and create tables) if these don't exist yet:

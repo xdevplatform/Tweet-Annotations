@@ -1,28 +1,28 @@
 {% extends 'base.html' %}
 
 {% block header %}
-    <h1>{% block title %} Tweet Annotations {% endblock %}</h1>
+    <h1>{% block title %} Tweet Annotations Demo App {% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
 
 <div class="card">
     <div class="card-body">
-      <p>This app uses <a href url="https://developer.twitter.com/en/docs/twitter-api/annotations">Tweet Annotations</a> to annotate profiles and highlight topics of interest for different Twitter users and their followers.</p>
-      <p>Select one of the following options:</p>
+        <p>This app demos how <a href url="https://developer.twitter.com/en/docs/twitter-api/annotations">Tweet Annotations</a> can be used to annotate profiles and highlight topics of interest for different Twitter users.</p>
+        <p>Select one of the following options:</p>
+        <form action="" method = "POST">
+            <div class="d-grid gap-2"> 
+                <p><a href=GetTopicsForProfiles type="button" class="btn btn-primary">Get topics of interest for a given profile</a></p>
+                <br>
+                <p><a href=GetTopicsForProfileFollowers type="button" class="btn btn-primary">Get topics of interest for a given profile's followers</a></p>
+                <br>
+                <p><a href=GetProfilesForTopic type="button" class="btn btn-primary">For a given topic, get a list of users who Tweet about the topic</a></p>
+                <br>
+                <p><a href=GetTweetMetricsForTopic type="button" class="btn btn-primary">Get resonance metrics for a given topic</a></p>
+            </div>  
+        </form>
     </div>
- </div>
-
-<form action="" method = "POST">    
-    <br>
-    <p><a href=GetTopicsForProfiles type="button" class="btn btn-sm btn-primary">Select</a> |||| Get topics of interest for a given profile.</p>
-    <br>
-    <p><a href=GetTopicsForProfileFollowers type="button" class="btn btn-sm btn-primary">Select</a> |||| Get topics of interest for a given profile's followers.</p>
-    <br>
-    <p><a href=GetProfilesForTopic type="button" class="btn btn-sm btn-primary">Select</a> |||| For a given topic, get a list of users who Tweet about the topic.</p>
-    <br>
-    <p><a href=GetTweetMetricsForTopic type="button" class="btn btn-sm btn-primary">Select</a> |||| Get resonance metrics for a given topic.</p>
-</form>
+</div>
 
 {% endblock %}
 

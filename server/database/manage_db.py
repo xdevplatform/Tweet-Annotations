@@ -1,6 +1,7 @@
 import sqlite3
 from sqlite3 import Error
 
+
 def create_connection(db_file):
     """ Create a database connection to a SQLite database. """
     connection = None
@@ -8,8 +9,9 @@ def create_connection(db_file):
         connection = sqlite3.connect(db_file)
     except Error as e:
         print(e)
-    
+
     return connection
+
 
 def create_table(connection, create_table_sql):
     """ create a table from the create_table_sql statement

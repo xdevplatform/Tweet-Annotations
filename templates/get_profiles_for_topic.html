@@ -10,30 +10,29 @@
         <div class="card-body">
             <p>Find users who care about a topic of interest.</p>
             <p>Select an annotation domain and annotation entity below:</p>
+            <form action="" method="post" novalidate>
+                {{ domains_form.hidden_tag() }}
+                <p>1. First select the domain:</p>
+                <p>
+                    {{domains_form.select.label}} {{domains_form.select}}
+                </p>
+                <input class="btn btn-sm btn-primary" type="submit" value="Submit domain">
+                <br>
+            </form>
+            <br>
+            <form action="" method="post" novalidate>
+                {{ entities_form.hidden_tag() }}
+                <p>2. Then select an entity within that domain:</p>
+                <p>
+                    {{entities_form.select.label}} {{entities_form.select}}
+                </p>
+                <input class="btn btn-sm btn-primary" type="submit" value="Submit entity">
+                <br>
+                <br>
+                <sup><i>Note: the lists of domains and entities available above are not exhaustive and have been compiled for demonstrative purposes only.</i></sup>
+            </form>
         </div>
     </div>
-    <br>
-    <form action="" method="post" novalidate>
-        {{ domains_form.hidden_tag() }}
-        <p>1. First select a domain:</p>
-        <p>
-            {{domains_form.select.label}} {{domains_form.select}}
-        </p>
-        <input class="btn btn-sm btn-primary" type="submit" value="Submit domain">
-        <br>
-    </form>
-    <br>
-    <form action="" method="post" novalidate>
-        {{ entities_form.hidden_tag() }}
-        <p>2. Then select an entity within that domain:</p>
-        <p>
-            {{entities_form.select.label}} {{entities_form.select}}
-        </p>
-        <input class="btn btn-sm btn-primary" type="submit" value="Submit entity">
-        <br>
-    </form>
-    <br>
-    <sup><i>Note: the lists of domains and entities available above are not exhaustive and have been compiled for demonstrative purposes only.</i></sup>
 
 {% endblock %}
 
@@ -43,7 +42,7 @@
 
         <div class="card">
             <div class="card-body">
-                <p></p>
+                <p>No data to analyze.</p>
                 <br>
                 <sup><i>For the purpose of this demo, this application only returns verified profiles based on a sample of non-promoted Tweets in English from the past 7 days.</i></sup>
                 <br>
@@ -68,7 +67,7 @@
             <p>No data to analyze. Try another topic.</p>
             <br>
             <sup><i>For the purpose of this demo, this application only returns verified profiles based on a sample of non-promoted Tweets in English from the past 7 days.</i></sup>
-            <br>>
+            <br>
         </div>
     </div>
 

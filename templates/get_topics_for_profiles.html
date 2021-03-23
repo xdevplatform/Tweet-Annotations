@@ -9,20 +9,17 @@
     <div class="card">
         <div class="card-body">
             <p>Find out what topics a user Tweets the most about.</p>
-            <p>Insert the username below:</p>
+            <form action="" method="POST" novalidate>
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.username.label }}<br>
+                    {{ form.username(size=32) }}
+                </p>
+                <input class="btn btn-sm btn-primary" type="submit" value="Submit">
+                <br>
+            </form>
         </div>
     </div>
-
-    <form action="" method="POST" novalidate>
-        {{ form.hidden_tag() }}
-        <p>
-            <br>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}
-        </p>
-        <input class="btn btn-sm btn-primary" type="submit" value="Submit">
-        <br>
-    </form>
 
 {% endblock %}
 
@@ -192,13 +189,13 @@
                 {% endif %}
 
                 <br>
-                <sup>This application analyzes up to 300 of the user's most recent Tweets.</sup>
+                <sup><i>This application analyzes up to 300 of the user's most recent Tweets.</i></sup>
                 <br>
-                <sup>Only annotations and entities that are present in at least 2 Tweets are displayed.</sup>
+                <sup><i>Only annotations and entities that are present in 2+ Tweets are displayed.</i></sup>
                 <br>
-                <sup>In addition, only entities with a probability score >= 0.5 are displayed.</sup>
+                <sup><i>In addition, only entities with a probability score >= 0.5 are displayed.</i></sup>
                 <br>
-                <sup>Read more about Tweet Annotations in <a href="https://developer.twitter.com/en/docs/twitter-api/annotations" >our documentation</a>.</sup>
+                <sup><i>Read more about Tweet Annotations in the <a href="https://developer.twitter.com/en/docs/twitter-api/annotations" >Twitter developer docs</a>.</i></sup>
             </div>
         </div>
         

@@ -8,21 +8,18 @@
 
 <div class="card">
     <div class="card-body">
-      <p>What topics do your followers care about the most?</p>
-      <p>Input a username below:</p>
+        <p>What topics do your followers care about the most?</p>
+        <form action="" method="POST" novalidate>
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.username.label }}<br>
+                {{ form.username(size=32) }}
+            </p>
+            <input class="btn btn-sm btn-primary" type="submit" value="Submit">
+            <br>
+        </form>
     </div>
 </div>
-
-<form action="" method="POST" novalidate>
-    {{ form.hidden_tag() }}
-    <p>
-        <br>
-        {{ form.username.label }}<br>
-        {{ form.username(size=32) }}
-    </p>
-    <input class="btn btn-sm btn-primary" type="submit" value="Submit">
-    <br>
-</form>
 
 {% endblock %}
 
@@ -76,7 +73,11 @@
 
         <div class="card">
             <div class="card-body">
-            <p>No data to analyze.</p>
+                <p><b>Total number of follower Tweets analyzed:</b> 0</p>
+                <br>
+                <sup><i>This application takes a (deterministic) random sample of the user's follower base and analyzes the 10 most recent Tweets for 50 followers.</i></sup>
+                <br>
+                <sup> 
             </div>
         </div>    
 
@@ -88,13 +89,33 @@
                 {% if tweet_count == 0 %}
 
                     <p><b>Total number of follower Tweets analyzed:</b> 0</p>
-                
+                    
+                    <br>
+                    <sup><i>This application takes a (deterministic) random sample of the user's follower base and analyzes the 10 most recent Tweets for 50 followers.</i></sup>
+                    <br>
+                    <sup>
+                    
                 {% else %}
+                    
+                    {% if follower_count == 6999 %}
+
+                    <p><b>Total follower count:</b> 6999+</p>
+                    <sup><i>Note: By default, this demo app does not return more than 6999 followers.</i></sup>
+                    <br>
+                    <p><b>Total number of follower Tweets analyzed:</b> {{ tweet_count }}</p>
+                    <br>
+                    <p><a href=/DownloadCSV type="button" class="btn btn-secondary btn-lg">Download CSV</a></p>
+                    <br>
+
+                    {% else %}
+                    
                     <p><b>Total follower count:</b> {{ follower_count }}</p>
                     <p><b>Total number of follower Tweets analyzed:</b> {{ tweet_count }}</p>
                     <br>
                     <p><a href=/DownloadCSV type="button" class="btn btn-secondary btn-lg">Download CSV</a></p>
                     <br>
+                    
+                    {% endif %}
 
                 {% endif %}
 
@@ -190,9 +211,9 @@
                 {% endif %}
 
                 <br>
-                <sup>This application takes a (deterministic) random sample of the user's follower base and analyzes the 10 most recent Tweets for 50 followers.</sup>
+                <sup><i>This application takes a (deterministic) random sample of the user's follower base and analyzes the 10 most recent Tweets for 50 followers.</i></sup>
                 <br>
-                <sup>Read more about Tweet Annotations in <a href="https://developer.twitter.com/en/docs/twitter-api/annotations" >our documentation</a>.</sup>
+                <sup><i>Read more about Tweet Annotations in <a href="https://developer.twitter.com/en/docs/twitter-api/annotations" >our documentation</a>.</i></sup>
             </div>
         </div>
         

@@ -9,19 +9,17 @@
     <div class="card">
         <div class="card-body">
             <p>Find out how a given topic resonates with Twitter users in the UK.</p>
+            <form action="" method="POST" novalidate>
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.keyword.label }}<br>
+                    {{ form.keyword(size=32) }}
+                </p>
+                <input class="btn btn-sm btn-primary" type="submit" value="Submit">
+                <br>
+            </form>
         </div>
     </div>
-
-    <form action="" method="POST" novalidate>
-        {{ form.hidden_tag() }}
-        <p>
-            <br>
-            {{ form.keyword.label }}<br>
-            {{ form.keyword(size=32) }}
-        </p>
-        <input class="btn btn-sm btn-primary" type="submit" value="Submit">
-        <br>
-    </form>
 
 {% endblock %}
 
@@ -31,7 +29,11 @@
 
     <div class="card">
         <div class="card-body">
-            <p> </p>
+            <p>No topic to analyze.</p>
+            <br>
+            <sup><i>For the purpose of this demo, Tweets are only returned if they are in English and if they were sent from the UK.</i></sup>
+            <br>
+            <sup><i>Replies, retweets and promoted Tweets are also excluded.</i></sup>
         </div>
     </div>
 
@@ -40,7 +42,10 @@
     <div class="card">
         <div class="card-body">
             <p>No Tweets to analyze.</p>
-            <sup>For the purpose of this demo, Tweets are only returned if they are in English and if they were sent from the UK. Replies, retweets and promoted Tweets are also excluded.</sup>
+            <br>
+            <sup><i>For the purpose of this demo, Tweets are only returned if they are in English and if they were sent from the UK.</i></sup>
+            <br>
+            <sup><i>Replies, retweets and promoted Tweets are also excluded.</i></sup>
         </div>
     </div>
 
@@ -49,7 +54,10 @@
     <div class="card">
         <div class="card-body">
             <p>An error occurred: {{ status_code }} .</p>
-            <sup>For the purpose of this demo, Tweets are only returned if they are in English and if they were sent from the UK. Replies, retweets and promoted Tweets are also excluded.</sup>
+            <br>
+            <sup><i>For the purpose of this demo, Tweets are only returned if they are in English and if they were sent from the UK.</i></sup>
+            <br>
+            <sup><i>Replies, retweets and promoted Tweets are also excluded.</i></sup>
         </div>
     </div>
 
