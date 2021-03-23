@@ -1,9 +1,10 @@
 # [ ] TODO --> Add options for user (e.g. how many Tweets are returned to analyze; location for which to get Tweets, parameters to tune follower base - number of followers for sample & number of Tweets for each sampled follower, etc.)
 # [ ] TODO --> Add a cogwheel while data is being fetched in the backend.
+# [ ] TODO --> Ensure if multiple users use this app it doesn't break (e.g. global variables)
 # [ ] TODO --> Add visual charts: go more granular than the annotation domain. Make sure to return the annotation entity when displaying graphs.
 
 import os
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, Response, send_from_directory, current_app
 from server.main import *
 from forms import GetUsername, GetTopic, DropdownForm, GetKeyword
 
@@ -11,6 +12,7 @@ app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 SELECTED_DOMAIN_ID = None
+CSV_PATH = None
 
 @app.route('/')
 def index():
@@ -18,6 +20,7 @@ def index():
 
 @app.route('/GetTopicsForProfiles', methods=["post", "get"])
 def get_topics_profile():
+    global CSV_PATH
     top_emojis = 0
     form = GetUsername()
     response_code = None
@@ -43,7 +46,9 @@ def get_topics_profile():
                 tweet_count, domain, entity, person, place, product, organization, other = get_annotations(user_timeline_tweets)
                 top_emojis_results = get_style(user_timeline_tweets, 4)
                 top_emojis = " ".join(k for k, v in top_emojis_results.items())
-    
+                CSV_PATH = f"top_annotations_{username}.csv"
+                export_to_csv(CSV_PATH, domain, entity, person, place, product, organization, other)
+
     return render_template('get_topics_for_profiles.html', form=form, annotations_data=annotations_data, top_emojis=top_emojis, tweet_count=tweet_count, domain=domain, entity=entity, person=person, place=place, product=product, organization=organization, other=other, response_code=response_code, methods=["post", "get"])
 
 @app.route('/GetTopicsForProfileFollowers', methods=["post", "get"])
@@ -118,8 +123,17 @@ def get_topics_follower_base():
     all_product = {k: v for k, v in all_product_ordered.items() if v >= 2}
     all_organization = {k: v for k, v in all_organization_ordered.items() if v >= 2}
     all_other = {k: v for k, v in all_other_ordered.items() if v >= 2}
+
+    export_to_csv(CSV_PATH, all_domain, all_entity, all_person, all_place, all_product, all_organization, all_other)
     
     return render_template('get_topics_for_profile_followers.html', form=form, follower_count=follower_count, annotations_data=annotations_data, tweet_count=tweet_count, top_emojis=top_emojis, domain=all_domain, entity=all_entity, person=all_person, place=all_place, product=all_product, organization=all_organization, other=all_other, response_code=response_code, methods=["post", "get"])
+
+@app.route('/DownloadCSV', methods=["post", "get"])
+def download_csv():
+    global CSV_PATH
+    uploads = current_app.root_path+"/"+CSV_PATH
+    csv = open(uploads,"r")
+    return Response(csv, mimetype="text/csv", headers={"Content-disposition": f"attachment; filename={uploads}"})
 
 @app.route('/GetProfilesForTopic', methods=["post", "get"])
 def get_profiles():

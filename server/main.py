@@ -1,7 +1,9 @@
+import os
 import json
 import random
 import emoji
 import regex
+import csv 
 from collections import Counter
 from server.api_handler import ApiHandler
 from server.authentication import Authentication
@@ -147,9 +149,6 @@ def get_style(tweets, value):
             if char in emojis:
                 emoji_list.append(symbol)
                 break
-    
-    # print(emoji_list)
-    # print(len(emoji_list))
 
     if len(emoji_list) > 0:
         emoji_count = Counter(emoji_list)
@@ -162,7 +161,6 @@ def get_style(tweets, value):
         top_emojis = {k: v for k, v in sorted(top_emojis_unsorted.items(), key=lambda item: item[1], reverse=True)}
     else: 
         top_emojis = 1
-        # print("No emojis to analyze")
     
     return top_emojis
 
@@ -244,10 +242,6 @@ def get_annotations(tweets):
         organization_frequency_ordered = None
         other_frequency_ordered = None
 
-    # print(f"""
-    # Total number of Tweets returned: {tweet_count}
-    # """)
-
     return tweet_count, domain_list_top, entity_list_top, person_list_top, place_list_top, product_list_top, organization_list_top, other_list_top 
 
 def update_annotations(dict1, dict2):
@@ -305,7 +299,6 @@ def search_tweets(query):
 def search_tweets_with_pagination(query):
 
     payload = {"query": query, "tweet.fields": "public_metrics", "max_results": "100"}
-    print(payload)
     search_tweets = ApiHandler("tweets/search/recent", authentication)
     response = search_tweets(payload)
 
@@ -332,8 +325,6 @@ def search_tweets_with_pagination(query):
                     if "data" in data:
                         for tweet in data["data"]:
                             results.append(tweet)
-                # print("Request count:", request_count)
-                # print("Code", response.status_code)
             
     return results, response.status_code
 
@@ -372,6 +363,35 @@ def get_users(data):
         user_details.append([user_info, tweet_id])
 
     return (user_details)
+
+def write_dict_to_csv_row(data_dict, writer, header):
+    row = [header]
+
+    for k,v in data_dict.items():
+        row.append(k)
+        row.append(v)
+    
+    writer.writerow(row)
+
+def export_to_csv(path_name, domain, entity, person, place, product, organization, other):
+
+    with open(path_name, 'w') as csvfile:
+
+        writer = csv.writer(csvfile)
+
+        write_dict_to_csv_row(domain, writer, "TOP DOMAINS")
+
+        write_dict_to_csv_row(entity, writer, "TOP ENTITIES")
+
+        write_dict_to_csv_row(person, writer, "TOP PEOPLE")
+
+        write_dict_to_csv_row(place, writer, "TOP PLACES")
+
+        write_dict_to_csv_row(product, writer, "TOP PRODUCTS")
+
+        write_dict_to_csv_row(organization, writer, "TOP ORGANIZATIONS")
+
+        write_dict_to_csv_row(other, writer, "TOP OTHER TOPICS")
 
 def get_profiles_for_topic():
     """
