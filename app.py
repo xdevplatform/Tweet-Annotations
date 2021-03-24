@@ -1,7 +1,7 @@
 # [ ] TODO --> Add options for user (e.g. how many Tweets are returned to analyze; location for which to get Tweets, parameters to tune follower base - number of followers for sample & number of Tweets for each sampled follower, etc.)
-# [ ] TODO --> Add a cogwheel while data is being fetched in the backend.
 # [ ] TODO --> Ensure if multiple users use this app it doesn't break (e.g. global variables)
 # [ ] TODO --> Add visual charts: go more granular than the annotation domain. Make sure to return the annotation entity when displaying graphs.
+# [ ] TODO --> Deploy
 
 import os
 from flask import (

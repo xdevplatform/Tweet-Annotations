@@ -18,6 +18,8 @@
             <input class="btn btn-sm btn-primary" type="submit" value="Submit">
             <br>
         </form>
+        <br>
+        <sup style="color:brown">Once submitted, please allow ~1 minute for data to be fetched and returned.</sup>
     </div>
 </div>
 
@@ -97,10 +99,10 @@
                     
                 {% else %}
                     
-                    {% if follower_count == 6999 %}
+                    {% if follower_count > 6500 %}
 
-                    <p><b>Total follower count:</b> 6999+</p>
-                    <sup><i>Note: By default, this demo app does not return more than 6999 followers.</i></sup>
+                    <p><b>Total follower count:</b> 6500+</p>
+                    <sup><i>Note: By default, this demo app does not return more than ~7000 followers.</i></sup>
                     <br>
                     <p><b>Total number of follower Tweets analyzed:</b> {{ tweet_count }}</p>
                     <br>
