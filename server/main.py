@@ -1,4 +1,5 @@
 import os
+import requests
 import json
 import random
 import emoji
@@ -176,6 +177,18 @@ def get_style(tweets, value):
         top_emojis = 1
 
     return top_emojis
+
+
+def get_visualisation(username):
+
+    url = "https://e8b072a1eb22.ngrok.io/stream/timelines"
+
+    payload = {"twitter_handle": f"{username}"}
+    headers = {"Content-Type": "application/json"}
+
+    response = requests.request("POST", url, json=payload, headers=headers)
+
+    return response
 
 
 def get_annotations(tweets):

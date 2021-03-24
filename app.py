@@ -45,6 +45,12 @@ def get_topics_profile():
     if form.validate_on_submit():
         username = form.username.data
         username, user_id = get_user_details(username)
+        try:
+            response = get_visualisation(username)
+            print(response)
+        except: 
+            print("Count not get data from GCP")
+            pass
         if user_id == None:
             annotations_data = 0
         else:
