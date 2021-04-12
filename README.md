@@ -1,6 +1,6 @@
 # Tweet Annotations 
 
-This sample code allows you to build a demo web app with Python and [Flask](https://flask.palletsprojects.com/en/1.1.x/) to exemplify some of the features and functionality available with the [Twitter API v2](https://developer.twitter.com/en/docs/twitter-api/early-access) and [Tweet Annotations](https://developer.twitter.com/en/docs/twitter-api/annotations). 
+This sample code allows you to build a demo web app with Python and [Flask](https://flask.palletsprojects.com/en/1.1.x/) and exemplifies some of the features and functionality available with the [Twitter API v2](https://developer.twitter.com/en/docs/twitter-api/early-access) and [Tweet Annotations](https://developer.twitter.com/en/docs/twitter-api/annotations). 
 
 ## Set up 
 
