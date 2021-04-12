@@ -4,7 +4,7 @@ This sample code allows you to build a demo web app with Python and [Flask](http
 
 ## Set up 
 
-* In the root directory, rename `credentials.yaml.template` to `credentials.yaml` and insert your Twitter App credentials. Note that you must use the credentials belonging to a Twitter App with access to the Twitter API v2.
+* In the root directory, rename `credentials.yaml.template` to `credentials.yaml` and insert your Twitter App credentials. Note that you must use the credentials belonging to a [Twitter Developer App](https://developer.twitter.com/en/docs/apps/overview) with access to the Twitter API v2.
 
 * Don't forget to add `credentials.yaml` to your `.gitignore` file to avoid compromising your App credentials.
 
