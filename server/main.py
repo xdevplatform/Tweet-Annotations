@@ -181,7 +181,7 @@ def get_style(tweets, value):
 
 def get_visualisation(username):
 
-    url = "https://e8b072a1eb22.ngrok.io/stream/timelines"
+    url = "https://a54df80b7070.ngrok.io/stream/timelines"
 
     payload = {"twitter_handle": f"{username}"}
     headers = {"Content-Type": "application/json"}

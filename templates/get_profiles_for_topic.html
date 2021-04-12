@@ -80,7 +80,7 @@
                 
                 {% for user in users %}
                 <ul>
-                    <li><b><a href="https://twitter.com/{{user[1]}}">{{ user[0][1] }},</a> {{ user[0][2] }}</b> <br><b>Profile description:</b> {{ user[0][3] }} <br><b>Profile_metrics:</b> {{ user[0][4] }} <br><b>Profile creation date:</b> {{ user[0][5] }} <br><b>Is verified:</b> {{ user[0][6] }} <br> <blockquote class="twitter-tweet"><a href="https://twitter.com/x/status/{{ user[1] }}"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>   </li>
+                    <li><b><a href="https://twitter.com/{{user[0][1]}}">{{ user[0][1] }},</a> {{ user[0][2] }}</b> <br><b>Profile description:</b> {{ user[0][3] }} <br><b>Profile_metrics:</b> {{ user[0][4] }} <br><b>Profile creation date:</b> {{ user[0][5] }} <br><b>Is verified:</b> {{ user[0][6] }} <br> <blockquote class="twitter-tweet"><a href="https://twitter.com/x/status/{{ user[1] }}"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>   </li>
                 </ul>
                 {% endfor %}
 
