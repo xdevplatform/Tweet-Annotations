@@ -87,7 +87,7 @@ python-dotenv==0.12.0
 python-slugify @ file:///tmp/build/80754af9/python-slugify_1600462544980/work
 pytimeparse==1.1.8
 pytz==2020.1
-PyYAML==5.3.1
+PyYAML==5.4
 pyzmq==19.0.2
 regex @ file:///Users/runner/miniforge3/conda-bld/regex_1610146851075/work
 requests==2.24.0
