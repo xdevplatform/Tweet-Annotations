@@ -1,0 +1,121 @@
+agate==1.6.1
+agate-dbf @ file:///tmp/build/80754af9/agate-dbf_1600131906274/work
+agate-excel==0.2.3
+agate-sql==0.5.5
+appdirs==1.4.4
+appnope==0.1.0
+attrs @ file:///tmp/build/80754af9/attrs_1600298409949/work
+Babel==2.8.0
+backcall==0.2.0
+beautifulsoup4==4.9.3
+black==19.10b0
+blinker==1.4
+boto3 @ file:///home/conda/feedstock_root/build_artifacts/boto3_1591228827806/work
+botocore @ file:///home/conda/feedstock_root/build_artifacts/botocore_1591225967606/work
+brotlipy==0.7.0
+certifi==2020.6.20
+cffi @ file:///opt/concourse/worker/volumes/live/74b22aae-8eb9-44eb-6c00-a8a07af62b36/volume/cffi_1600699174113/work
+chardet==3.0.4
+click==7.1.2
+collections2==0.3.0
+conda==4.9.2
+conda-package-handling @ file:///opt/concourse/worker/volumes/live/41a2ba95-d84c-4c06-4d6e-5665866bc5b4/volume/conda-package-handling_1603018173200/work
+cryptography @ file:///opt/concourse/worker/volumes/live/449c9d42-da39-4138-6bf0-843317a1ad24/volume/cryptography_1601046862310/work
+csvkit @ file:///opt/concourse/worker/volumes/live/c716f4b6-bcc9-48b4-6b0c-b80af81fb810/volume/csvkit_1600354129042/work
+cycler==0.10.0
+dbfread==2.0.7
+decorator==4.4.2
+demjson==2.2.4
+docopt==0.6.2
+docutils==0.15.2
+emoji @ file:///home/conda/feedstock_root/build_artifacts/emoji_1611421689564/work
+et-xmlfile==1.0.1
+Flask==1.1.1
+Flask-WTF==0.14.3
+future==0.18.2
+idna @ file:///tmp/build/80754af9/idna_1593446292537/work
+ipykernel @ file:///opt/concourse/worker/volumes/live/73e8766c-12c3-4f76-62a6-3dea9a7da5b7/volume/ipykernel_1596206701501/work/dist/ipykernel-5.3.4-py3-none-any.whl
+ipython @ file:///opt/concourse/worker/volumes/live/bb221eaa-cc1a-4ab2-40f7-74a2020a44b1/volume/ipython_1599056234390/work
+ipython-genutils==0.2.0
+isodate==0.6.0
+itsdangerous==1.1.0
+jdcal==1.4.1
+jedi @ file:///opt/concourse/worker/volumes/live/152cd167-7b79-4fbd-5c97-d7b338805c2b/volume/jedi_1598371617305/work
+Jinja2==2.11.2
+jmespath @ file:///tmp/build/80754af9/jmespath_1594304593830/work
+jtutils==0.0.8
+jupyter-client @ file:///tmp/build/80754af9/jupyter_client_1601311786391/work
+jupyter-core==4.6.3
+kiwisolver==1.2.0
+leather==0.3.3
+leven==1.0.4
+livereload==2.6.1
+MarkupSafe==1.1.1
+matplotlib==3.1.3
+mkl-fft==1.2.0
+mkl-random==1.1.1
+mkl-service==2.3.0
+mypy-extensions==0.4.3
+nltk==3.4.5
+nose==1.3.7
+numpy==1.18.1
+oauthlib==3.1.0
+olefile==0.46
+openpyxl @ file:///tmp/build/80754af9/openpyxl_1598113097404/work
+pandas==1.0.2
+parsedatetime==2.6
+parso==0.7.0
+pathspec==0.7.0
+pexpect==4.8.0
+pickle5==0.0.9
+pickleshare==0.7.5
+Pillow @ file:///opt/concourse/worker/volumes/live/28f094e1-d4b0-436d-6751-607fa59ce512/volume/pillow_1602788716788/work
+prompt-toolkit @ file:///tmp/build/80754af9/prompt-toolkit_1602688806899/work
+ptyprocess==0.6.0
+pycosat==0.6.3
+pycparser @ file:///tmp/build/80754af9/pycparser_1594388511720/work
+Pygments @ file:///tmp/build/80754af9/pygments_1600458456400/work
+PyHive==0.6.1
+PyJWT==1.7.1
+pykerberos==1.2.1
+pyOpenSSL @ file:///tmp/build/80754af9/pyopenssl_1594392929924/work
+pyparsing==2.4.7
+PySocks==1.7.1
+python-csv==0.0.13
+python-dateutil==2.8.1
+python-dotenv==0.12.0
+python-slugify @ file:///tmp/build/80754af9/python-slugify_1600462544980/work
+pytimeparse==1.1.8
+pytz==2020.1
+PyYAML==5.3.1
+pyzmq==19.0.2
+regex @ file:///Users/runner/miniforge3/conda-bld/regex_1610146851075/work
+requests==2.24.0
+requests-kerberos==0.12.0
+requests-oauthlib==1.2.0
+ruamel-yaml==0.15.87
+s3transfer==0.3.3
+sasl==0.2.1
+scipy==1.4.1
+selenium==3.141.0
+shortuuid==1.0.1
+six==1.15.0
+soupsieve==2.2.1
+SQLAlchemy @ file:///opt/concourse/worker/volumes/live/c8ccb658-c55f-4a2e-6c0c-7f57021ac0b1/volume/sqlalchemy_1598374749865/work
+text-unidecode==1.3
+thrift==0.13.0
+thrift-sasl==0.4.2
+toml @ file:///tmp/build/80754af9/toml_1592853716807/work
+tornado==6.0.4
+tqdm @ file:///tmp/build/80754af9/tqdm_1602185206534/work
+traitlets @ file:///tmp/build/80754af9/traitlets_1602787416690/work
+typed-ast==1.4.1
+typing-extensions @ file:///tmp/build/80754af9/typing_extensions_1598376058250/work
+Unidecode==1.1.1
+urllib3 @ file:///tmp/build/80754af9/urllib3_1597086586889/work
+wcwidth @ file:///tmp/build/80754af9/wcwidth_1593447189090/work
+Werkzeug==0.16.0
+wordcloud==1.6.0
+WTForms @ file:///tmp/build/80754af9/wtforms_1597707484216/work
+xlrd==1.2.0
+xmltodict==0.12.0
