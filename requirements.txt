@@ -41,7 +41,7 @@ isodate==0.6.0
 itsdangerous==1.1.0
 jdcal==1.4.1
 jedi @ file:///opt/concourse/worker/volumes/live/152cd167-7b79-4fbd-5c97-d7b338805c2b/volume/jedi_1598371617305/work
-Jinja2==2.11.2
+Jinja2==2.11.3
 jmespath @ file:///tmp/build/80754af9/jmespath_1594304593830/work
 jtutils==0.0.8
 jupyter-client @ file:///tmp/build/80754af9/jupyter_client_1601311786391/work
