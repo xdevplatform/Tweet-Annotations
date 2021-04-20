@@ -64,7 +64,8 @@ def get_topics_profile():
                     other,
                 ) = get_annotations(user_timeline_tweets)
                 top_emojis_results = get_style(user_timeline_tweets, 4)
-                top_emojis = " ".join(k for k, v in top_emojis_results.items())
+                if top_emojis_results != 1:
+                    top_emojis = " ".join(k for k, v in top_emojis_results.items())
                 CSV_PATH = f"top_annotations_{username}.csv"
                 export_to_csv(
                     CSV_PATH,
