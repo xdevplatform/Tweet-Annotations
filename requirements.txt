@@ -76,7 +76,7 @@ pycosat==0.6.3
 pycparser @ file:///tmp/build/80754af9/pycparser_1594388511720/work
 Pygments @ file:///tmp/build/80754af9/pygments_1600458456400/work
 PyHive==0.6.1
-PyJWT==1.7.1
+PyJWT==2.4.0
 pykerberos==1.2.1
 pyOpenSSL @ file:///tmp/build/80754af9/pyopenssl_1594392929924/work
 pyparsing==2.4.7
